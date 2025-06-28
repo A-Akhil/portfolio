@@ -12,6 +12,7 @@ import Contact from './components/Contact';
 import Navigation from './components/Navigation';
 import BackgroundAnimation from './components/BackgroundAnimation';
 import LoadingScreen from './components/LoadingScreen';
+import GameLauncher from './components/Games/GameLauncher';
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -79,6 +80,9 @@ export default function Home() {
               <Awards />
               <Contact />
             </motion.div>
+            
+            {/* Game Launcher - Available after loading */}
+            <GameLauncher />
           </motion.main>
         )}
       </AnimatePresence>
