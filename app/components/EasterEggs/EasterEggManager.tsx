@@ -25,6 +25,7 @@ const EasterEggManager: React.FC = () => {
 
   const [showEasterEggPanel, setShowEasterEggPanel] = useState(false);
   const [konamiProgress, setKonamiProgress] = useState(0);
+  const [konamiActivationTime, setKonamiActivationTime] = useState<number | null>(null);
 
   // Helper function to convert hex to RGB values
   const hexToRgb = (hex: string) => {
@@ -66,9 +67,28 @@ const EasterEggManager: React.FC = () => {
 
   // Initialize and restore state on component mount
   useEffect(() => {
-    // Load saved Konami activation state
+    // Load saved Konami activation state and time
     const savedKonamiState = localStorage.getItem('konamiActivated');
+    const savedActivationTime = localStorage.getItem('konamiActivationTime');
     const konamiWasActivated = savedKonamiState === 'true';
+    
+    let isKonamiStillActive = false;
+    
+    // Check if Konami code is still within 10-minute window
+    if (konamiWasActivated && savedActivationTime) {
+      const activationTime = parseInt(savedActivationTime);
+      const currentTime = Date.now();
+      const tenMinutesInMs = 10 * 60 * 1000; // 10 minutes
+      
+      if (currentTime - activationTime < tenMinutesInMs) {
+        isKonamiStillActive = true;
+        setKonamiActivationTime(activationTime);
+      } else {
+        // Konami code has expired, clear it
+        localStorage.removeItem('konamiActivated');
+        localStorage.removeItem('konamiActivationTime');
+      }
+    }
 
     // Load saved theme
     const savedTheme = localStorage.getItem('customTheme');
@@ -79,7 +99,10 @@ const EasterEggManager: React.FC = () => {
         customTheme = JSON.parse(savedTheme);
         // Apply saved theme immediately
         applyThemeToCss(customTheme);
-        console.log('🎨 Restored custom theme from previous session:', customTheme);
+        // Only log theme restoration if Konami is active
+        if (isKonamiStillActive) {
+          console.log('🎨 Restored custom theme from previous session:', customTheme);
+        }
       } catch (error) {
         console.error('Failed to load saved theme:', error);
       }
@@ -88,51 +111,108 @@ const EasterEggManager: React.FC = () => {
     // Update state with restored values
     setEasterEggState(prev => ({
       ...prev,
-      konamiActivated: konamiWasActivated,
-      consoleMessagesActivated: true,
+      konamiActivated: isKonamiStillActive,
+      consoleMessagesActivated: isKonamiStillActive, // Only show console messages if Konami is active
       customTheme: customTheme
     }));
 
-    // Show panel if Konami was previously activated
-    if (konamiWasActivated) {
+    // Show panel if Konami was previously activated and still valid
+    if (isKonamiStillActive) {
       setShowEasterEggPanel(true);
     }
 
-    // Add welcome message to console
-    console.log(`%c🚀 A Akhil's Portfolio Loaded!`, 'color: #00CCFF; font-size: 18px; font-weight: bold;');
-    
-    if (konamiWasActivated) {
+    // Only show welcome and hint messages if Konami is NOT active (reduced console spam)
+    if (!isKonamiStillActive) {
+      // Minimal welcome message
+      console.log(`%c🚀 A Akhil's Portfolio`, 'color: #00CCFF; font-size: 16px; font-weight: bold;');
+    } else {
+      // Full welcome message only when Konami is active
+      console.log(`%c🚀 A Akhil's Portfolio Loaded!`, 'color: #00CCFF; font-size: 18px; font-weight: bold;');
       console.log(`%c🎮 Konami Code Status: ACTIVATED (restored from previous session)`, 'color: #00FF88; font-size: 14px; font-weight: bold;');
       console.log(`%cEaster eggs are available! Check the panel on the right →`, 'color: #00CCFF; font-size: 14px;');
-    } else {
-      console.log(`%cLooking for easter eggs? Try the Konami code: ↑↑↓↓←→←→BA`, 'color: #00FF88; font-size: 14px;');
-    }
-    
-    console.log(`%cOr check the developer console for hidden commands! 🔍`, 'color: #8B00FF; font-size: 14px;');
-    console.log(`%cHint: Make sure no input fields are focused when entering the code!`, 'color: #FF6600; font-size: 12px;');
-    
-    // Add reset function to global window for debugging
-    if (typeof window !== 'undefined') {
-      (window as any).resetEasterEggs = resetEasterEggState;
-      console.log(`%c🛠️  Debug: Call resetEasterEggs() in console to reset all easter egg state`, 'color: #FF6600; font-size: 12px;');
+      
+      // Add reset function to global window for debugging when Konami is active
+      if (typeof window !== 'undefined') {
+        (window as any).resetEasterEggs = resetEasterEggState;
+        console.log(`%c🛠️  Debug: Call resetEasterEggs() in console to reset all easter egg state`, 'color: #FF6600; font-size: 12px;');
+      }
     }
   }, []);
 
+  // Auto-deactivate Konami code after 10 minutes
+  useEffect(() => {
+    if (konamiActivationTime && easterEggState.konamiActivated) {
+      const tenMinutesInMs = 10 * 60 * 1000; // 10 minutes
+      const timeElapsed = Date.now() - konamiActivationTime;
+      const timeRemaining = tenMinutesInMs - timeElapsed;
+      
+      if (timeRemaining > 0) {
+        const timer = setTimeout(() => {
+          // Auto-deactivate Konami code
+          setEasterEggState(prev => ({
+            ...prev,
+            konamiActivated: false,
+            consoleMessagesActivated: false,
+            asciiArtVisible: false,
+            binaryClockVisible: false,
+            hexPickerVisible: false
+          }));
+          
+          setShowEasterEggPanel(false);
+          setKonamiActivationTime(null);
+          
+          // Clear from localStorage
+          localStorage.removeItem('konamiActivated');
+          localStorage.removeItem('konamiActivationTime');
+          
+          // Show deactivation message
+          toast('⏰ Konami Code deactivated after 10 minutes', {
+            duration: 3000,
+            style: {
+              background: '#1a1a2e',
+              color: '#FF6600',
+              border: '1px solid #FF6600'
+            }
+          });
+          
+          console.log(`%c⏰ Konami Code automatically deactivated after 10 minutes`, 'color: #FF6600; font-size: 14px; font-weight: bold;');
+        }, timeRemaining);
+        
+        return () => clearTimeout(timer);
+      } else {
+        // Time has already expired
+        setEasterEggState(prev => ({
+          ...prev,
+          konamiActivated: false,
+          consoleMessagesActivated: false
+        }));
+        setKonamiActivationTime(null);
+        localStorage.removeItem('konamiActivated');
+        localStorage.removeItem('konamiActivationTime');
+      }
+    }
+  }, [konamiActivationTime, easterEggState.konamiActivated]);
+
   const handleKonamiActivated = () => {
+    const activationTime = Date.now();
+    
     // First update the state
     setEasterEggState(prev => ({
       ...prev,
-      konamiActivated: true
+      konamiActivated: true,
+      consoleMessagesActivated: true // Enable console messages when Konami is activated
     }));
 
     // Show the panel
     setShowEasterEggPanel(true);
     
-    // Save state to localStorage
+    // Save state and activation time to localStorage
     localStorage.setItem('konamiActivated', 'true');
+    localStorage.setItem('konamiActivationTime', activationTime.toString());
+    setKonamiActivationTime(activationTime);
 
-    // Show notification toast
-    toast('🎮 Konami Code Activated! Easter eggs unlocked!', {
+    // Show notification toast with timer info
+    toast('🎮 Konami Code Activated! (Active for 10 minutes)', {
       duration: 4000,
       style: {
         background: '#1a1a2e',
@@ -143,7 +223,14 @@ const EasterEggManager: React.FC = () => {
     });
 
     // Log to console
-    console.log(`%c🎮 Konami Code Activated! Easter eggs unlocked and saved to session!`, 'color: #00FF88; font-size: 16px; font-weight: bold;');
+    console.log(`%c🎮 Konami Code Activated! Easter eggs unlocked for 10 minutes!`, 'color: #00FF88; font-size: 16px; font-weight: bold;');
+    console.log(`%c⏰ Auto-deactivation in 10 minutes`, 'color: #FFFF00; font-size: 12px;');
+    
+    // Add reset function to global window for debugging
+    if (typeof window !== 'undefined') {
+      (window as any).resetEasterEggs = resetEasterEggState;
+      console.log(`%c🛠️  Debug: Call resetEasterEggs() in console to reset all easter egg state`, 'color: #FF6600; font-size: 12px;');
+    }
     
     // Force re-render of the easter egg panel by using a timeout
     setTimeout(() => {
@@ -191,6 +278,7 @@ const EasterEggManager: React.FC = () => {
   const resetEasterEggState = () => {
     // Clear localStorage
     localStorage.removeItem('konamiActivated');
+    localStorage.removeItem('konamiActivationTime');
     localStorage.removeItem('customTheme');
 
     // Reset to default theme
@@ -207,11 +295,12 @@ const EasterEggManager: React.FC = () => {
       asciiArtVisible: false,
       binaryClockVisible: false,
       hexPickerVisible: false,
-      consoleMessagesActivated: true,
+      consoleMessagesActivated: false, // Reset to false (no console spam)
       customTheme: null
     });
 
     setShowEasterEggPanel(false);
+    setKonamiActivationTime(null);
 
     toast('🔄 Easter egg state reset', {
       duration: 3000,
@@ -326,6 +415,7 @@ const EasterEggManager: React.FC = () => {
 
                   <div className="text-xs text-gray-500 mt-3 pt-2 border-t border-gray-700">
                     <p>🎮 Konami code activated!</p>
+                    <p>⏰ Active for 10 minutes</p>
                     <p>Check console for more</p>
                   </div>
                 </motion.div>

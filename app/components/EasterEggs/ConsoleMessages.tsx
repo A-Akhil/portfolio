@@ -13,7 +13,8 @@ const ConsoleMessages: React.FC<ConsoleMessagesProps> = ({
   konamiActivated 
 }) => {
   useEffect(() => {
-    if (isActivated) {
+    // Only show detailed console messages when Konami code is activated
+    if (isActivated && konamiActivated) {
       // Welcome message
       const welcomeMsg = CONSOLE_MESSAGES.find(msg => msg.id === 'welcome');
       if (welcomeMsg) {
@@ -74,7 +75,7 @@ const ConsoleMessages: React.FC<ConsoleMessagesProps> = ({
         console.log(`%c• portfolio.eastereggs() - Find all easter eggs`, 'color: #00FF88; font-family: monospace;');
       }, 8000);
     }
-  }, [isActivated]);
+  }, [isActivated, konamiActivated]); // Add konamiActivated dependency
 
   useEffect(() => {
     if (konamiActivated) {
@@ -85,9 +86,9 @@ const ConsoleMessages: React.FC<ConsoleMessagesProps> = ({
     }
   }, [konamiActivated]);
 
-  // Add global portfolio object with hidden commands
+  // Add global portfolio object with hidden commands - only when Konami is activated
   useEffect(() => {
-    if (isActivated && typeof window !== 'undefined') {
+    if (isActivated && konamiActivated && typeof window !== 'undefined') {
       (window as any).portfolio = {
         skills: () => {
           console.log(`%c🛠️ TECHNICAL SKILLS:`, 'color: #00CCFF; font-size: 16px; font-weight: bold;');
@@ -142,7 +143,7 @@ const ConsoleMessages: React.FC<ConsoleMessagesProps> = ({
 
       console.log(`%c🎯 Global 'portfolio' object added! Try 'portfolio.skills()' or any other command!`, 'color: #FF6600; font-size: 14px; font-weight: bold;');
     }
-  }, [isActivated]);
+  }, [isActivated, konamiActivated]); // Add konamiActivated dependency
 
   return null; // This component doesn't render anything visible
 };
