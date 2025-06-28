@@ -67,29 +67,49 @@ const About = () => {
             </div>
           </motion.div>
 
-          {/* Stats Grid */}
+          {/* Profile Image and Stats */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
             transition={{ duration: 0.8, delay: 0.4 }}
-            className="grid grid-cols-2 gap-6"
+            className="flex flex-col justify-center items-center"
           >
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
-                className="text-center p-6 bg-ai-gray/30 rounded-2xl border border-ai-blue/20 hover:border-ai-cyan/50 transition-all duration-300 hover:transform hover:scale-105"
-              >
-                <div className="text-3xl md:text-4xl font-bold text-ai-cyan mb-2">
-                  {stat.number}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={inView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
+              transition={{ duration: 0.8, delay: 0.5 }}
+              className="relative mb-6"
+            >
+              {/* Decorative border */}
+              <div className="absolute -inset-1 bg-gradient-to-r from-ai-cyan via-ai-blue to-ai-purple opacity-70 blur-sm animate-pulse"></div>
+              
+              {/* Image - Full rectangular image */}
+              <img 
+                src={personalInfo.avatarUrl} 
+                alt="A Akhil" 
+                className="max-w-full w-80 object-cover border-2 border-ai-dark relative z-10"
+              />
+            </motion.div>
+            
+            {/* Stats below image */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 0.7 }}
+              className="bg-ai-gray/30 px-8 py-4 rounded-lg border border-ai-blue/30 shadow-lg mt-4"
+            >
+              <div className="flex gap-8 text-center">
+                <div>
+                  <span className="text-ai-cyan text-2xl font-bold">{experiences.length}+</span>
+                  <span className="text-ai-light/70 text-sm block">Research Roles</span>
                 </div>
-                <div className="text-sm text-ai-light/70 font-medium">
-                  {stat.label}
+                <div className="h-12 w-px bg-ai-blue/30"></div>
+                <div>
+                  <span className="text-ai-cyan text-2xl font-bold">{projects.length}+</span>
+                  <span className="text-ai-light/70 text-sm block">AI/ML Projects</span>
                 </div>
-              </motion.div>
-            ))}
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>
