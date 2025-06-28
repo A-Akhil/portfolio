@@ -22,16 +22,16 @@ const Awards = () => {
     },
     {
       title: 'IEEE GRSS Hackathon for Data Driven AI in Remote Sensing',
-      level: 'National Level',
+      level: 'College Level',
       position: '1st Prize',
-      description: 'Won First Prize at the national-level IEEE GRSS Hackathon for Data-Driven AI in Remote Sensing, supported by NASA.',
+      description: 'Won First Prize at the college-level IEEE GRSS Hackathon for Data-Driven AI in Remote Sensing, supported by NASA.',
       icon: FaTrophy,
       color: 'from-blue-400 to-blue-600',
       year: '2024',
     },
     {
       title: 'Smart Campus Hackathon',
-      level: 'National Level',
+      level: 'College Level',
       position: '1st Place',
       description: 'Secured First Place in Smart Campus Hackathon organized by SRM Institute of Science and Technology, competing against 100+ teams.',
       icon: FaMedal,
@@ -41,8 +41,8 @@ const Awards = () => {
     {
       title: 'Smart India Hackathon',
       level: 'National Level',
-      position: 'Finalist',
-      description: 'Advanced to the final round in Smart India Hackathon, out of 2,000+ teams nationwide.',
+      position: 'Semi-Finalist',
+      description: 'Advanced to the semi-final round in Smart India Hackathon, out of 2,000+ teams nationwide.',
       icon: FaAward,
       color: 'from-purple-400 to-purple-600',
       year: '2024',
@@ -158,13 +158,12 @@ const Awards = () => {
           initial={{ opacity: 0, y: 50 }}
           animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
           transition={{ duration: 0.8, delay: 1 }}
-          className="mt-16 grid grid-cols-2 md:grid-cols-4 gap-8"
+          className="mt-16 grid grid-cols-3 gap-8"
         >
           {[
-            { number: '5+', label: 'National Awards' },
+            { number: '5+', label: 'Total Awards' },
             { number: '3', label: 'First Prizes' },
-            { number: '2', label: 'Finalist Positions' },
-            { number: '7000+', label: 'Competitors Defeated' },
+            { number: '2', label: 'Semi-Final Positions' },
           ].map((stat, index) => (
             <motion.div
               key={stat.label}
