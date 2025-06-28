@@ -2,9 +2,9 @@
 
 import React, { useState, useEffect, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import TerminalHeader from './TerminalHeader';
-import CommandProcessor from './CommandProcessor';
-import { TerminalLine, TerminalCommand } from '../../types/terminalTypes';
+import TerminalHeader from '@/app/components/Terminal/TerminalHeader';
+import CommandProcessor from '@/app/components/Terminal/CommandProcessor';
+import { TerminalLine, TerminalCommand } from '@/app/types/terminalTypes';
 
 // Helper function to convert ANSI color codes to HTML
 const formatAnsiColors = (text: string): string => {

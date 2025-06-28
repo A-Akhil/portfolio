@@ -3,8 +3,11 @@
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
 import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaDownload } from 'react-icons/fa';
+import portfolioData from '../data/portfolioData';
 
 const Hero = () => {
+  const { personalInfo } = portfolioData;
+  
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -76,7 +79,7 @@ const Hero = () => {
           variants={itemVariants}
           className="text-5xl md:text-7xl font-bold mb-6"
         >
-          <span className="gradient-text">A Akhil</span>
+          <span className="gradient-text">{personalInfo.name}</span>
         </motion.h1>
 
         <motion.div
@@ -84,16 +87,9 @@ const Hero = () => {
           className="text-2xl md:text-4xl font-light mb-8 h-20"
         >
           <TypeAnimation
-            sequence={[
-              'AI/ML Developer',
-              2000,
-              'Research Scientist',
-              2000,
-              'Deep Learning Engineer',
-              2000,
-              'Innovation Catalyst',
-              2000,
-            ]}
+            sequence={
+              personalInfo.titles.flatMap(title => [title, 2000])
+            }
             wrapper="span"
             speed={50}
             className="text-ai-cyan"
