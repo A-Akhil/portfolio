@@ -835,6 +835,10 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
     return [];
   }
 
+  public getCurrentDirectoryPath(): string {
+    return this.currentDirectory;
+  }
+
   private getCurrentDirectory(): FileSystemItem | null {
     const pathParts = this.currentDirectory.split('/').filter(p => p);
     let current = this.fileSystem;
