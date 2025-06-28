@@ -2,10 +2,12 @@
 
 import React, { useState, useCallback, useEffect, useRef } from 'react';
 import { motion } from 'framer-motion';
+import { Play, Pause, RotateCcw, SkipForward } from 'lucide-react';
 import toast from 'react-hot-toast';
 
 import AlgorithmSelector from './AlgorithmSelector';
 import ControlPanel from './ControlPanel';
+import ArrayGenerator from './ArrayGenerator';
 import SortingVisualizer from './SortingVisualizer';
 import SearchingVisualizer from './SearchingVisualizer';
 import { VisualizerState, ControlPanelState, SortingAlgorithm, SearchingAlgorithm } from '../../../types/algorithmTypes';
@@ -383,12 +385,12 @@ const VisualizerContainer: React.FC = () => {
 
   return (
     <div className="max-w-7xl mx-auto p-6">
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Left Panel - Controls */}
-        <div className="lg:col-span-1 space-y-6">
-          {/* Algorithm Selection */}
-          <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-600 rounded-lg p-6">
-            <h3 className="text-lg font-semibold text-white mb-4">Algorithm Selection</h3>
+      {/* Compact Top Controls Bar */}
+      <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-600 rounded-lg p-4 mb-6">
+        <div className="grid grid-cols-1 xl:grid-cols-5 gap-4">
+          {/* Algorithm Selection - Compact */}
+          <div className="xl:col-span-1">
+            <label className="block text-sm font-medium text-gray-300 mb-2">Algorithm</label>
             <AlgorithmSelector
               algorithmType={algorithmType}
               selectedAlgorithm={visualizerState.algorithm}
@@ -396,35 +398,199 @@ const VisualizerContainer: React.FC = () => {
             />
           </div>
 
-          {/* Control Panel */}
-          <ControlPanel
-            arraySize={controlState.arraySize}
-            onArraySizeChange={handleArraySizeChange}
-            isCustomInput={controlState.isCustomInput}
-            customArray={controlState.customArray}
-            onArrayGenerated={handleArrayGenerated}
-            onCustomInputToggle={handleCustomInputToggle}
-            onCustomArrayChange={handleCustomArrayChange}
-            isPlaying={visualizerState.isPlaying}
-            isPaused={visualizerState.isPaused}
-            isComplete={visualizerState.isComplete}
-            speed={visualizerState.speed}
-            onPlay={handlePlay}
-            onPause={handlePause}
-            onReset={handleReset}
-            onStepForward={handleStepForward}
-            onSpeedChange={handleSpeedChange}
-            algorithmType={algorithmType}
-            selectedAlgorithm={visualizerState.algorithm}
-            onAlgorithmTypeChange={handleAlgorithmTypeChange}
-            currentArray={visualizerState.array}
-            searchTarget={visualizerState.searchTarget}
-            onSearchTargetChange={handleSearchTargetChange}
-          />
+          {/* Playback Controls - Prominent */}
+          <div className="xl:col-span-1">
+            <label className="block text-sm font-medium text-gray-300 mb-2">Controls</label>
+            <div className="flex gap-2">
+              <motion.button
+                onClick={visualizerState.isPlaying ? handlePause : handlePlay}
+                disabled={!visualizerState.algorithm || visualizerState.array.length === 0}
+                className={`
+                  flex items-center justify-center px-4 py-2 rounded-lg font-medium transition-all duration-300
+                  ${!visualizerState.algorithm || visualizerState.array.length === 0
+                    ? 'bg-gray-700/50 text-gray-500 cursor-not-allowed'
+                    : visualizerState.isPlaying
+                    ? 'bg-orange-500/20 text-orange-400 border border-orange-500 hover:bg-orange-500/30'
+                    : 'bg-ai-green/20 text-ai-green border border-ai-green hover:bg-ai-green/30'
+                  }
+                `}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {visualizerState.isPlaying ? <Pause size={16} /> : <Play size={16} />}
+              </motion.button>
+              
+              <motion.button
+                onClick={handleReset}
+                disabled={!visualizerState.isPaused && !visualizerState.isComplete}
+                className="flex items-center justify-center px-3 py-2 rounded-lg bg-red-500/20 text-red-400 border border-red-500 hover:bg-red-500/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <RotateCcw size={16} />
+              </motion.button>
+              
+              <motion.button
+                onClick={handleStepForward}
+                disabled={visualizerState.isPlaying || visualizerState.isComplete || !visualizerState.algorithm}
+                className="flex items-center justify-center px-3 py-2 rounded-lg bg-ai-purple/20 text-ai-purple border border-ai-purple hover:bg-ai-purple/30 disabled:opacity-50 disabled:cursor-not-allowed"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <SkipForward size={16} />
+              </motion.button>
+            </div>
+          </div>
+
+          {/* Progress Display - New */}
+          <div className="xl:col-span-1">
+            <label className="block text-sm font-medium text-gray-300 mb-2">Progress</label>
+            <div className="bg-gray-700 rounded-lg p-2">
+              <div className="text-center text-white text-sm">
+                <span className="text-ai-cyan font-bold">{visualizerState.currentStep}</span>
+                <span className="text-gray-400"> / </span>
+                <span className="text-gray-300">{visualizerState.steps.length}</span>
+              </div>
+              {visualizerState.steps.length > 0 && (
+                <div className="mt-1 bg-gray-800 rounded-full h-2">
+                  <div 
+                    className="bg-ai-cyan h-2 rounded-full transition-all duration-300"
+                    style={{ width: `${(visualizerState.currentStep / Math.max(visualizerState.steps.length - 1, 1)) * 100}%` }}
+                  />
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Speed Control - Inline */}
+          <div className="xl:col-span-1">
+            <label className="block text-sm font-medium text-gray-300 mb-2">Speed</label>
+            <select
+              value={visualizerState.speed}
+              onChange={(e) => handleSpeedChange(Number(e.target.value))}
+              className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-ai-cyan focus:outline-none"
+            >
+              {Object.entries({ 0.25: 'Very Slow', 0.5: 'Slow', 1: 'Normal', 2: 'Fast', 4: 'Very Fast', 8: 'Ultra Fast' }).map(([value, label]) => (
+                <option key={value} value={value}>{label}</option>
+              ))}
+            </select>
+          </div>
+
+          {/* Algorithm Type Toggle - Compact */}
+          <div className="xl:col-span-1">
+            <label className="block text-sm font-medium text-gray-300 mb-2">Type</label>
+            <div className="grid grid-cols-2 gap-1">
+              <motion.button
+                onClick={() => handleAlgorithmTypeChange('sorting')}
+                className={`
+                  px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300
+                  ${algorithmType === 'sorting'
+                    ? 'bg-ai-cyan/20 text-ai-cyan border border-ai-cyan'
+                    : 'bg-gray-700/50 text-gray-400 border border-gray-600 hover:border-ai-cyan/50'
+                  }
+                `}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Sort
+              </motion.button>
+              <motion.button
+                onClick={() => handleAlgorithmTypeChange('searching')}
+                className={`
+                  px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300
+                  ${algorithmType === 'searching'
+                    ? 'bg-ai-cyan/20 text-ai-cyan border border-ai-cyan'
+                    : 'bg-gray-700/50 text-gray-400 border border-gray-600 hover:border-ai-cyan/50'
+                  }
+                `}
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                Search
+              </motion.button>
+            </div>
+          </div>
         </div>
 
-        {/* Right Panel - Visualization */}
-        <div className="lg:col-span-2">
+        {/* Search Target Input (when searching) */}
+        {algorithmType === 'searching' && (
+          <div className="mt-4 pt-4 border-t border-gray-600">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Search Target
+                </label>
+                <input
+                  type="number"
+                  value={visualizerState.searchTarget || ''}
+                  onChange={(e) => handleSearchTargetChange(Number(e.target.value))}
+                  placeholder="Enter target value"
+                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-ai-cyan focus:outline-none"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Quick Select
+                </label>
+                <div className="flex gap-2">
+                  {visualizerState.array.slice(0, 4).map((value, index) => (
+                    <motion.button
+                      key={index}
+                      onClick={() => handleSearchTargetChange(value)}
+                      className="px-3 py-2 bg-ai-purple/20 text-ai-purple border border-ai-purple rounded-lg hover:bg-ai-purple/30 text-sm"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      {value}
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+
+      {/* Two Column Layout: Array Generator + Visualization */}
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
+        {/* Left Panel - Array Generator (Compact) */}
+        <div className="lg:col-span-1">
+          <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-600 rounded-lg p-4">
+            <h4 className="text-md font-semibold text-white mb-4">Array Generator</h4>
+            
+            {/* Array Size Control */}
+            <div className="mb-4">
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Array Size: {controlState.arraySize}
+              </label>
+              <input
+                type="range"
+                min="10"
+                max="200"
+                value={controlState.arraySize}
+                onChange={(e) => handleArraySizeChange(Number(e.target.value))}
+                className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer slider"
+              />
+              <div className="flex justify-between text-xs text-gray-400 mt-1">
+                <span>10</span>
+                <span>200</span>
+              </div>
+            </div>
+
+            {/* Array Generator */}
+            <ArrayGenerator
+              arraySize={controlState.arraySize}
+              isCustomInput={controlState.isCustomInput}
+              customArray={controlState.customArray}
+              onArrayGenerated={handleArrayGenerated}
+              onCustomInputToggle={handleCustomInputToggle}
+              onCustomArrayChange={handleCustomArrayChange}
+            />
+          </div>
+        </div>
+
+        {/* Right Panel - Visualization (Large) */}
+        <div className="lg:col-span-3">
           <div className="bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-600 rounded-lg p-6">
             <div className="flex items-center justify-between mb-6">
               <h3 className="text-lg font-semibold text-white">
