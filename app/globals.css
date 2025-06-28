@@ -4,8 +4,16 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Fira+Code:wght@300;400;500;600&display=swap');
 
+/* Prevent white flash - Applied globally */
+:root {
+  color-scheme: dark;
+  background-color: #0A0A0F;
+}
+
 html {
   scroll-behavior: smooth;
+  background: #0A0A0F;
+  color-scheme: dark;
 }
 
 body {
@@ -13,6 +21,24 @@ body {
   background: linear-gradient(135deg, #0A0A0F 0%, #1A1A2E 100%);
   color: #E2E8F0;
   overflow-x: hidden;
+  min-height: 100vh;
+}
+
+/* Prevent white flash on all Next.js containers */
+html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
+  background-color: #0A0A0F !important;
+}
+
+/* Ensure dark theme for all elements */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+/* Support for prefers-color-scheme */
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
 }
 
 /* Custom scrollbar */

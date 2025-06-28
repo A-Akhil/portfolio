@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   keywords: 'AI, ML, Machine Learning, Artificial Intelligence, Developer, Researcher, DRDO, ISRO, Samsung, Python, React',
   authors: [{ name: 'A Akhil' }],
   viewport: 'width=device-width, initial-scale=1',
+  themeColor: '#0A0A0F',
+  colorScheme: 'dark',
 }
 
 export default function RootLayout({
@@ -15,8 +17,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" className="dark">
+      <body className="bg-gradient-to-br from-ai-dark via-ai-gray to-ai-dark text-gray-100 antialiased">
         {children}
       </body>
     </html>
