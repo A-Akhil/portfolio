@@ -106,8 +106,8 @@ const portfolioData: PortfolioData = {
       "I'm a passionate AI/ML developer and researcher currently pursuing B.Tech in Computer Science with specialization in AI-ML at SRM Institute of Science and Technology. My journey in artificial intelligence has been marked by groundbreaking research experiences at India's premier organizations.",
       "From developing AI models for defense applications at DRDO to creating recommendation engines for space technology at ISRO, my work spans across cutting-edge domains of artificial intelligence and machine learning."
     ],
-    resumeUrl: '/resume.pdf',
-    avatarUrl: '/images/profile.jpg',
+    resumeUrl: '/Akhil_resume.pdf',
+    avatarUrl: '/og-image.png', // Using your profile picture that's already in the public folder
   },
   
   experiences: [
