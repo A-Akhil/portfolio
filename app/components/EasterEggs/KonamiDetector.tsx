@@ -63,12 +63,13 @@ const KonamiDetector: React.FC<KonamiDetectorProps> = ({
     });
   }, [lastInputTime, onKonamiActivated, isActivated, resetSequence]);
 
-  // Notify parent of progress changes
+  // Only notify parent of activation, not intermediate progress
   useEffect(() => {
     if (onProgressChange) {
-      onProgressChange(inputSequence.length);
+      // Only update progress to 0 to hide the sequence entry completely
+      onProgressChange(0);
     }
-  }, [inputSequence.length, onProgressChange]);
+  }, [onProgressChange]);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyPress);
@@ -78,27 +79,14 @@ const KonamiDetector: React.FC<KonamiDetectorProps> = ({
     };
   }, [handleKeyPress]);
 
-  // Debug mode - show current sequence in development
+  // Debug mode - only log when code is fully activated
   useEffect(() => {
-    if (process.env.NODE_ENV === 'development' && inputSequence.length > 0) {
-      const readableSequence = inputSequence.map(key => 
-        key.replace('Arrow', '').replace('Key', '')
-      ).join(' → ');
-      console.log(`🔑 Current sequence: ${readableSequence}`);
-      
-      const remaining = KONAMI_CODE.length - inputSequence.length;
-      if (remaining > 0) {
-        const nextKeys = KONAMI_CODE.slice(inputSequence.length, inputSequence.length + 3)
-          .map(key => key.replace('Arrow', '').replace('Key', ''))
-          .join(' → ');
-        console.log(`📝 Next keys needed: ${nextKeys}`);
-      }
-      
-      // Show progress
-      const progress = Math.round((inputSequence.length / KONAMI_CODE.length) * 100);
-      console.log(`📊 Progress: ${progress}% (${inputSequence.length}/${KONAMI_CODE.length})`);
+    // Only log when full code is activated, not during progress
+    // This keeps the Konami code truly secret
+    if (process.env.NODE_ENV === 'development' && isActivated) {
+      console.log('🎮 KONAMI CODE STATUS: ACTIVATED');
     }
-  }, [inputSequence]);
+  }, [isActivated]);
 
   return null; // This component doesn't render anything visible
 };
