@@ -1,3 +1,6 @@
+// Add Cloudflare Edge runtime configuration
+export const runtime = 'edge';
+
 import './globals.css'
 import type { Metadata } from 'next'
 
