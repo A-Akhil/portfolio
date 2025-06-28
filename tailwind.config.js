@@ -8,13 +8,13 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        'ai-blue': '#0066FF',
-        'ai-cyan': '#00CCFF',
-        'ai-green': '#00FF88',
-        'ai-purple': '#8B00FF',
-        'ai-dark': '#0A0A0F',
-        'ai-gray': '#1A1A2E',
-        'ai-light': '#E2E8F0',
+        'ai-blue': 'rgb(var(--color-ai-blue) / <alpha-value>)',
+        'ai-cyan': 'rgb(var(--color-ai-cyan) / <alpha-value>)',
+        'ai-green': 'rgb(var(--color-ai-green) / <alpha-value>)',
+        'ai-purple': 'rgb(var(--color-ai-purple) / <alpha-value>)',
+        'ai-dark': 'rgb(var(--color-ai-dark) / <alpha-value>)',
+        'ai-gray': 'rgb(var(--color-ai-gray) / <alpha-value>)',
+        'ai-light': 'rgb(var(--color-ai-light) / <alpha-value>)',
       },
       fontFamily: {
         'mono': ['Fira Code', 'monospace'],
@@ -33,8 +33,8 @@ module.exports = {
           '50%': { transform: 'translateY(-10px)' },
         },
         glow: {
-          '0%': { boxShadow: '0 0 5px #00CCFF, 0 0 10px #00CCFF, 0 0 15px #00CCFF' },
-          '100%': { boxShadow: '0 0 10px #00CCFF, 0 0 20px #00CCFF, 0 0 30px #00CCFF' },
+          '0%': { boxShadow: '0 0 5px rgb(var(--color-ai-cyan)), 0 0 10px rgb(var(--color-ai-cyan)), 0 0 15px rgb(var(--color-ai-cyan))' },
+          '100%': { boxShadow: '0 0 10px rgb(var(--color-ai-cyan)), 0 0 20px rgb(var(--color-ai-cyan)), 0 0 30px rgb(var(--color-ai-cyan))' },
         },
         matrix: {
           '0%': { transform: 'translateY(-100%)' },
@@ -46,7 +46,7 @@ module.exports = {
         },
         'blink-caret': {
           'from, to': { borderColor: 'transparent' },
-          '50%': { borderColor: '#00CCFF' },
+          '50%': { borderColor: 'rgb(var(--color-ai-cyan))' },
         },
       },
       backgroundImage: {

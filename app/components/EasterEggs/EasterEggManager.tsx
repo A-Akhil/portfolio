@@ -26,12 +26,41 @@ const EasterEggManager: React.FC = () => {
   const [showEasterEggPanel, setShowEasterEggPanel] = useState(false);
   const [konamiProgress, setKonamiProgress] = useState(0);
 
+  // Helper function to convert hex to RGB values
+  const hexToRgb = (hex: string) => {
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+    if (!result) return '0 0 0';
+    return `${parseInt(result[1], 16)} ${parseInt(result[2], 16)} ${parseInt(result[3], 16)}`;
+  };
+
   // Function to apply theme to CSS variables
-  const applyThemeToCss = (theme: { primary: string; secondary: string; accent: string }) => {
+  const applyThemeToCss = (theme: { 
+    primary: string; 
+    secondary: string; 
+    accent: string;
+    blue?: string;
+    dark?: string;
+    gray?: string;
+    light?: string;
+  }) => {
     if (typeof document !== 'undefined') {
-      document.documentElement.style.setProperty('--color-ai-cyan', theme.primary);
-      document.documentElement.style.setProperty('--color-ai-purple', theme.secondary);
-      document.documentElement.style.setProperty('--color-ai-green', theme.accent);
+      document.documentElement.style.setProperty('--color-ai-cyan', hexToRgb(theme.primary));
+      document.documentElement.style.setProperty('--color-ai-purple', hexToRgb(theme.secondary));
+      document.documentElement.style.setProperty('--color-ai-green', hexToRgb(theme.accent));
+      
+      // Apply additional colors if provided
+      if (theme.blue) {
+        document.documentElement.style.setProperty('--color-ai-blue', hexToRgb(theme.blue));
+      }
+      if (theme.dark) {
+        document.documentElement.style.setProperty('--color-ai-dark', hexToRgb(theme.dark));
+      }
+      if (theme.gray) {
+        document.documentElement.style.setProperty('--color-ai-gray', hexToRgb(theme.gray));
+      }
+      if (theme.light) {
+        document.documentElement.style.setProperty('--color-ai-light', hexToRgb(theme.light));
+      }
     }
   };
 
@@ -126,7 +155,15 @@ const EasterEggManager: React.FC = () => {
     setKonamiProgress(progress);
   };
 
-  const handleThemeChange = (theme: { primary: string; secondary: string; accent: string }) => {
+  const handleThemeChange = (theme: { 
+    primary: string; 
+    secondary: string; 
+    accent: string;
+    blue: string;
+    dark: string;
+    gray: string;
+    light: string;
+  }) => {
     setEasterEggState(prev => ({
       ...prev,
       customTheme: theme
