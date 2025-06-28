@@ -75,32 +75,73 @@ const SortingVisualizer: React.FC<SortingVisualizerProps> = ({
       ctx.fillStyle = gradient;
       ctx.fillRect(x, y, barWidth, barHeight);
 
-      // Draw bar outline
-      ctx.strokeStyle = ALGORITHM_COLORS.text + '40';
-      ctx.lineWidth = 1;
+      // Draw bar outline with thicker line for pivot
+      const isPivot = currentStep?.pivots?.includes(index);
+      ctx.strokeStyle = isPivot ? ALGORITHM_COLORS.pivot : ALGORITHM_COLORS.text + '40';
+      ctx.lineWidth = isPivot ? 3 : 1;
       ctx.strokeRect(x, y, barWidth, barHeight);
 
-      // Draw value labels for smaller arrays
-      if (array.length <= 20) {
-        ctx.fillStyle = ALGORITHM_COLORS.text;
-        ctx.font = '12px monospace';
+      // Enhanced number display - show numbers on bars for better arrays
+      const shouldShowNumbers = array.length <= 50; // Increased threshold
+      
+      if (shouldShowNumbers) {
+        // Draw number on the bar itself (middle of bar)
+        const fontSize = Math.max(10, Math.min(16, barWidth * 0.8));
+        ctx.fillStyle = barHeight > 30 ? '#FFFFFF' : ALGORITHM_COLORS.text;
+        ctx.font = `${fontSize}px monospace`;
         ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        
+        // Position text in center of bar or on top if bar is too short
+        const textY = barHeight > 25 ? y + barHeight / 2 : y - 8;
         ctx.fillText(
           value.toString(),
           x + barWidth / 2,
-          height - 10
+          textY
         );
       }
 
-      // Draw index labels for very small arrays
-      if (array.length <= 10) {
+      // Draw value labels at bottom for reference (for all arrays)
+      if (array.length <= 30) {
         ctx.fillStyle = ALGORITHM_COLORS.text + '80';
         ctx.font = '10px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
         ctx.fillText(
-          index.toString(),
+          value.toString(),
           x + barWidth / 2,
-          y - 5
+          height - 5
         );
+      }
+
+      // Highlight pivot with special effects
+      if (isPivot) {
+        // Draw glowing outline for pivot
+        ctx.shadowColor = ALGORITHM_COLORS.pivot;
+        ctx.shadowBlur = 10;
+        ctx.strokeStyle = ALGORITHM_COLORS.pivot;
+        ctx.lineWidth = 4;
+        ctx.strokeRect(x - 2, y - 2, barWidth + 4, barHeight + 4);
+        ctx.shadowBlur = 0; // Reset shadow
+        
+        // Draw pivot indicator above the bar
+        ctx.fillStyle = ALGORITHM_COLORS.pivot;
+        ctx.font = 'bold 12px sans-serif';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'alphabetic';
+        ctx.fillText('PIVOT', x + barWidth / 2, y - 20);
+        
+        // Draw arrow pointing to pivot
+        ctx.beginPath();
+        ctx.moveTo(x + barWidth / 2 - 6, y - 8);
+        ctx.lineTo(x + barWidth / 2, y - 2);
+        ctx.lineTo(x + barWidth / 2 + 6, y - 8);
+        ctx.closePath();
+        ctx.fillStyle = ALGORITHM_COLORS.pivot;
+        ctx.fill();
+        ctx.strokeStyle = '#FFFFFF';
+        ctx.lineWidth = 1;
+        ctx.stroke();
       }
     });
 

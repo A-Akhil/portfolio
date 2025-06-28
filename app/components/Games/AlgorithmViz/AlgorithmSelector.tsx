@@ -23,6 +23,7 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
   onAlgorithmSelect
 }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const algorithms = algorithmType === 'sorting' ? SORTING_ALGORITHMS : SEARCHING_ALGORITHMS;
   const selectedInfo: AlgorithmInfo | null = selectedAlgorithm ? 
@@ -61,22 +62,30 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
               {selectedInfo ? selectedInfo.name : `Select ${algorithmType} algorithm...`}
             </span>
           </div>
-          <motion.div
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.2 }}
-          >
-            <ChevronDown size={20} />
-          </motion.div>
+          <div className="flex items-center gap-2">
+            {/* Show complexity inline when selected */}
+            {selectedInfo && (
+              <span className={`text-xs font-mono ${getComplexityColor(selectedInfo.timeComplexity.average)}`}>
+                {selectedInfo.timeComplexity.average}
+              </span>
+            )}
+            <motion.div
+              animate={{ rotate: isOpen ? 180 : 0 }}
+              transition={{ duration: 0.2 }}
+            >
+              <ChevronDown size={20} />
+            </motion.div>
+          </div>
         </motion.button>
 
-        {/* Dropdown Menu */}
+        {/* Dropdown Menu - Simplified */}
         <AnimatePresence>
           {isOpen && (
             <motion.div
               initial={{ opacity: 0, y: -10, scale: 0.95 }}
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
-              className="absolute top-full left-0 right-0 mt-2 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-10 max-h-96 overflow-y-auto"
+              className="absolute top-full left-0 right-0 mt-2 bg-gray-800 border border-gray-600 rounded-lg shadow-xl z-10 max-h-64 overflow-y-auto"
             >
               {Object.entries(algorithms).map(([key, info]) => {
                 const Icon = getAlgorithmIcon(info.category);
@@ -88,27 +97,19 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
                       setIsOpen(false);
                     }}
                     className={`
-                      w-full flex items-start gap-3 px-4 py-3 text-left transition-all duration-200
+                      w-full flex items-center justify-between px-4 py-2 text-left transition-all duration-200
                       hover:bg-ai-cyan/10 border-b border-gray-700 last:border-b-0
                       ${selectedAlgorithm === key ? 'bg-ai-cyan/20 text-ai-cyan' : 'text-gray-300'}
                     `}
                     whileHover={{ x: 4 }}
                   >
-                    <Icon size={16} className="mt-1 flex-shrink-0" />
-                    <div className="space-y-1 flex-1">
-                      <div className="font-medium">{info.name}</div>
-                      <div className="text-xs text-gray-400 line-clamp-2">
-                        {info.description}
-                      </div>
-                      <div className="flex items-center gap-4 text-xs">
-                        <span className={getComplexityColor(info.timeComplexity.average)}>
-                          Avg: {info.timeComplexity.average}
-                        </span>
-                        <span className="text-gray-500">
-                          Space: {info.spaceComplexity}
-                        </span>
-                      </div>
+                    <div className="flex items-center gap-3">
+                      <Icon size={16} className="flex-shrink-0" />
+                      <span className="font-medium">{info.name}</span>
                     </div>
+                    <span className={`text-xs font-mono ${getComplexityColor(info.timeComplexity.average)}`}>
+                      {info.timeComplexity.average}
+                    </span>
                   </motion.button>
                 );
               })}
@@ -117,101 +118,67 @@ const AlgorithmSelector: React.FC<AlgorithmSelectorProps> = ({
         </AnimatePresence>
       </div>
 
-      {/* Selected Algorithm Info */}
+      {/* Compact Info Toggle */}
+      {selectedInfo && (
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2 text-sm text-gray-400">
+            <span className={getComplexityColor(selectedInfo.timeComplexity.average)}>
+              {selectedInfo.timeComplexity.average}
+            </span>
+            <span>•</span>
+            <span>{selectedInfo.spaceComplexity}</span>
+            {'stable' in selectedInfo && (
+              <>
+                <span>•</span>
+                <span className={selectedInfo.stable ? 'text-green-400' : 'text-red-400'}>
+                  {selectedInfo.stable ? 'Stable' : 'Unstable'}
+                </span>
+              </>
+            )}
+          </div>
+          <motion.button
+            onClick={() => setShowDetails(!showDetails)}
+            className="text-xs text-ai-cyan hover:text-ai-cyan/80 transition-colors"
+            whileHover={{ scale: 1.05 }}
+          >
+            {showDetails ? 'Hide Details' : 'Show Details'}
+          </motion.button>
+        </div>
+      )}
+
+      {/* Collapsible Detailed Info */}
       <AnimatePresence>
-        {selectedInfo && (
+        {selectedInfo && showDetails && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="bg-gradient-to-r from-ai-cyan/10 to-ai-purple/10 border border-ai-cyan/30 rounded-lg p-4 space-y-3"
+            className="bg-gradient-to-r from-ai-cyan/10 to-ai-purple/10 border border-ai-cyan/30 rounded-lg p-3 space-y-2"
           >
-            {/* Algorithm Name & Category */}
-            <div className="flex items-center justify-between">
-              <h4 className="text-lg font-semibold text-white flex items-center gap-2">
-                {React.createElement(getAlgorithmIcon(selectedInfo.category), { size: 20, className: 'text-ai-cyan' })}
-                {selectedInfo.name}
-              </h4>
-              <span className={`
-                px-2 py-1 rounded-full text-xs font-medium
-                ${selectedInfo.category === 'sorting' 
-                  ? 'bg-ai-cyan/20 text-ai-cyan' 
-                  : 'bg-ai-purple/20 text-ai-purple'
-                }
-              `}>
-                {selectedInfo.category}
-              </span>
-            </div>
-
             {/* Description */}
             <p className="text-gray-300 text-sm leading-relaxed">
               {selectedInfo.description}
             </p>
 
-            {/* Complexity Analysis */}
-            <div className="space-y-2">
-              <h5 className="text-sm font-semibold text-gray-200">Time Complexity:</h5>
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
-                <div className="bg-gray-800/50 rounded-lg p-2">
-                  <div className="text-xs text-gray-400">Best Case</div>
-                  <div className={`font-mono text-sm ${getComplexityColor(selectedInfo.timeComplexity.best)}`}>
-                    {selectedInfo.timeComplexity.best}
-                  </div>
-                </div>
-                <div className="bg-gray-800/50 rounded-lg p-2">
-                  <div className="text-xs text-gray-400">Average Case</div>
-                  <div className={`font-mono text-sm ${getComplexityColor(selectedInfo.timeComplexity.average)}`}>
-                    {selectedInfo.timeComplexity.average}
-                  </div>
-                </div>
-                <div className="bg-gray-800/50 rounded-lg p-2">
-                  <div className="text-xs text-gray-400">Worst Case</div>
-                  <div className={`font-mono text-sm ${getComplexityColor(selectedInfo.timeComplexity.worst)}`}>
-                    {selectedInfo.timeComplexity.worst}
-                  </div>
+            {/* Complexity Grid */}
+            <div className="grid grid-cols-3 gap-2">
+              <div className="bg-gray-800/50 rounded p-2">
+                <div className="text-xs text-gray-400">Best</div>
+                <div className={`font-mono text-xs ${getComplexityColor(selectedInfo.timeComplexity.best)}`}>
+                  {selectedInfo.timeComplexity.best}
                 </div>
               </div>
-              
-              <div className="bg-gray-800/50 rounded-lg p-2">
-                <div className="text-xs text-gray-400">Space Complexity</div>
-                <div className={`font-mono text-sm ${getComplexityColor(selectedInfo.spaceComplexity)}`}>
-                  {selectedInfo.spaceComplexity}
+              <div className="bg-gray-800/50 rounded p-2">
+                <div className="text-xs text-gray-400">Average</div>
+                <div className={`font-mono text-xs ${getComplexityColor(selectedInfo.timeComplexity.average)}`}>
+                  {selectedInfo.timeComplexity.average}
                 </div>
               </div>
-            </div>
-
-            {/* Algorithm Properties (for sorting algorithms) */}
-            {'stable' in selectedInfo && (
-              <div className="space-y-2">
-                <h5 className="text-sm font-semibold text-gray-200">Properties:</h5>
-                <div className="flex gap-2 flex-wrap">
-                  <span className={`
-                    px-2 py-1 rounded-full text-xs font-medium
-                    ${selectedInfo.stable 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-red-500/20 text-red-400'
-                    }
-                  `}>
-                    {selectedInfo.stable ? '✓ Stable' : '✗ Unstable'}
-                  </span>
-                  <span className={`
-                    px-2 py-1 rounded-full text-xs font-medium
-                    ${selectedInfo.inPlace 
-                      ? 'bg-green-500/20 text-green-400' 
-                      : 'bg-red-500/20 text-red-400'
-                    }
-                  `}>
-                    {selectedInfo.inPlace ? '✓ In-place' : '✗ Not in-place'}
-                  </span>
+              <div className="bg-gray-800/50 rounded p-2">
+                <div className="text-xs text-gray-400">Worst</div>
+                <div className={`font-mono text-xs ${getComplexityColor(selectedInfo.timeComplexity.worst)}`}>
+                  {selectedInfo.timeComplexity.worst}
                 </div>
-              </div>
-            )}
-
-            {/* Call to Action */}
-            <div className="pt-2 border-t border-gray-600">
-              <div className="flex items-center gap-2 text-sm text-ai-cyan">
-                <ArrowRight size={16} />
-                <span>Ready to visualize! Generate an array and click Play to begin.</span>
               </div>
             </div>
           </motion.div>
