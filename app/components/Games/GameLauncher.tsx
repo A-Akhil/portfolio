@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X, Gamepad2, Brain, Zap } from 'lucide-react';
 import SnakeGame from './SnakeAI/SnakeGame';
+import VisualizerContainer from './AlgorithmViz/VisualizerContainer';
 
 const GameLauncher: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -25,15 +26,11 @@ const GameLauncher: React.FC = () => {
       icon: Zap,
       color: 'from-ai-cyan to-ai-green',
       features: ['All Sorting Algorithms', 'Search Algorithms', 'Performance Analysis', 'Custom Arrays'],
-      disabled: true // Will enable in next phase
+      disabled: false // Now enabled!
     }
   ];
 
   const openGame = (gameId: 'snake' | 'algorithms') => {
-    if (gameId === 'algorithms') {
-      // TODO: Implement in Phase 2B
-      return;
-    }
     setSelectedGame(gameId);
     setIsOpen(true);
   };
@@ -181,11 +178,7 @@ const GameLauncher: React.FC = () => {
               {/* Game Content */}
               <div className="flex-1 p-4">
                 {selectedGame === 'snake' && <SnakeGame />}
-                {selectedGame === 'algorithms' && (
-                  <div className="text-center text-gray-400 py-20">
-                    Algorithm Visualizer coming in Phase 2B!
-                  </div>
-                )}
+                {selectedGame === 'algorithms' && <VisualizerContainer />}
               </div>
             </div>
           </motion.div>
