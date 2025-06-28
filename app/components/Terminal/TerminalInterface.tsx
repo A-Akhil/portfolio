@@ -195,7 +195,7 @@ const TerminalInterface: React.FC = () => {
 
   const getCurrentPrompt = () => {
     // Show current directory in prompt
-    let path = commandProcessor.currentDirectory || '/home/akhil';
+    let path = commandProcessor.getCurrentDirectoryPath() || '/home/akhil';
     // Shorten to ~ if home
     if (path === '/home/akhil') path = '~';
     else if (path.startsWith('/home/akhil/')) path = '~' + path.slice('/home/akhil'.length);
