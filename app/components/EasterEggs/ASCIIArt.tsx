@@ -1,19 +1,33 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, Shuffle } from 'lucide-react';
-import { ASCII_ART_COLLECTION, ASCIIArt } from '../../types/easterEggTypes';
+import { X, Shuffle, Upload, Contrast, Sliders } from 'lucide-react';
+import { ASCII_ART_COLLECTION, ASCIIArt, CustomASCIIArtOptions } from '../../types/easterEggTypes';
 
 interface ASCIIArtProps {
   isVisible: boolean;
   onClose: () => void;
 }
 
+// ASCII characters from dark to light
+const ASCII_CHARS = [' ', '.', ':', '-', '=', '+', '*', '#', '%', '@'];
+
 const ASCIIArtComponent: React.FC<ASCIIArtProps> = ({ isVisible, onClose }) => {
   const [currentArt, setCurrentArt] = useState<ASCIIArt>(ASCII_ART_COLLECTION[0]);
   const [animatedLines, setAnimatedLines] = useState<string[]>([]);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [showUpload, setShowUpload] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [options, setOptions] = useState<CustomASCIIArtOptions>({
+    density: 'medium',
+    contrast: 1,
+    invert: false
+  });
+  
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
 
   const typewriterEffect = (art: ASCIIArt) => {
     setIsAnimating(true);
@@ -37,14 +51,145 @@ const ASCIIArtComponent: React.FC<ASCIIArtProps> = ({ isVisible, onClose }) => {
       const newArt = ASCII_ART_COLLECTION[randomIndex];
       setCurrentArt(newArt);
       typewriterEffect(newArt);
+      setShowUpload(false);
     }
   };
 
+  // Image to ASCII conversion functions
+  
+  const handleFileSelect = useCallback((file: File) => {
+    if (!file.type.startsWith('image/')) {
+      alert('Please upload an image file (JPEG, PNG, GIF)');
+      return;
+    }
+    
+    setIsProcessing(true);
+    
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      const img = new Image();
+      img.onload = () => {
+        convertImageToASCII(img);
+      };
+      img.src = e.target?.result as string;
+    };
+    reader.readAsDataURL(file);
+  }, [options]);
+  
+  const convertImageToASCII = useCallback((img: HTMLImageElement) => {
+    if (!canvasRef.current) return;
+    
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    
+    // Determine output dimensions based on density
+    let width, height;
+    switch(options.density) {
+      case 'low':
+        width = 40;
+        break;
+      case 'medium':
+        width = 80;
+        break;
+      case 'high':
+        width = 120;
+        break;
+      default:
+        width = 80;
+    }
+    
+    // Calculate height to maintain aspect ratio
+    const aspectRatio = img.height / img.width;
+    height = Math.floor(width * aspectRatio * 0.5); // Multiply by 0.5 because characters are taller than wide
+    
+    // Set canvas dimensions
+    canvas.width = width;
+    canvas.height = height;
+    
+    // Draw and resize image on canvas
+    ctx.drawImage(img, 0, 0, width, height);
+    
+    // Get image data
+    const imageData = ctx.getImageData(0, 0, width, height);
+    const data = imageData.data;
+    
+    // Generate ASCII art
+    const asciiLines: string[] = [];
+    
+    for (let y = 0; y < height; y++) {
+      let line = '';
+      for (let x = 0; x < width; x++) {
+        const idx = (y * width + x) * 4;
+        const r = data[idx];
+        const g = data[idx + 1];
+        const b = data[idx + 2];
+        
+        // Calculate brightness (0-255)
+        let brightness = (0.299 * r + 0.587 * g + 0.114 * b) * options.contrast;
+        brightness = Math.max(0, Math.min(255, brightness));
+        
+        // Map brightness to ASCII character
+        const charIndex = options.invert 
+          ? Math.floor((255 - brightness) * (ASCII_CHARS.length - 1) / 255)
+          : Math.floor(brightness * (ASCII_CHARS.length - 1) / 255);
+          
+        line += ASCII_CHARS[charIndex];
+      }
+      asciiLines.push(line);
+    }
+    
+    // Create custom ASCII art object
+    const customArt: ASCIIArt = {
+      id: 'custom-' + Date.now(),
+      name: 'Custom Image',
+      art: asciiLines,
+      description: 'Generated from uploaded image',
+      isCustom: true
+    };
+    
+    setCurrentArt(customArt);
+    typewriterEffect(customArt);
+    setIsProcessing(false);
+  }, [options]);
+  
+  const handleDrop = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    
+    if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
+      handleFileSelect(e.dataTransfer.files[0]);
+    }
+  }, [handleFileSelect]);
+  
+  const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    setIsDragging(true);
+  }, []);
+  
+  const handleDragLeave = useCallback(() => {
+    setIsDragging(false);
+  }, []);
+  
+  const handleFileInputChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      handleFileSelect(e.target.files[0]);
+    }
+  }, [handleFileSelect]);
+  
+  const triggerFileInput = () => {
+    if (fileInputRef.current) {
+      fileInputRef.current.click();
+    }
+  };
+  
   useEffect(() => {
     if (isVisible) {
-      typewriterEffect(currentArt);
+      if (!showUpload) {
+        typewriterEffect(currentArt);
+      }
     }
-  }, [isVisible, currentArt]);
+  }, [isVisible, currentArt, showUpload]);
 
   return (
     <AnimatePresence>
@@ -60,25 +205,31 @@ const ASCIIArtComponent: React.FC<ASCIIArtProps> = ({ isVisible, onClose }) => {
             initial={{ y: 50 }}
             animate={{ y: 0 }}
             exit={{ y: 50 }}
-            className="bg-gray-900 border border-ai-cyan rounded-lg p-6 max-w-lg mx-4 relative"
+            className="bg-gray-900 border border-ai-cyan rounded-lg p-6 max-w-xl w-full mx-4 relative"
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
             <div className="flex items-center justify-between mb-4">
               <div>
-                <h3 className="text-lg font-bold text-ai-cyan">ASCII Art Gallery</h3>
-                <p className="text-sm text-gray-400">{currentArt.description}</p>
+                <h3 className="text-lg font-bold text-ai-cyan">
+                  {showUpload ? 'Image to ASCII Converter' : 'ASCII Art Gallery'}
+                </h3>
+                <p className="text-sm text-gray-400">
+                  {showUpload ? 'Drop an image to convert to ASCII art' : currentArt.description}
+                </p>
               </div>
               <div className="flex gap-2">
-                <motion.button
-                  onClick={shuffleArt}
-                  disabled={isAnimating}
-                  className="p-2 bg-ai-purple/20 text-ai-purple rounded-lg hover:bg-ai-purple/30 transition-colors disabled:opacity-50"
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Shuffle size={16} />
-                </motion.button>
+                {!showUpload && (
+                  <motion.button
+                    onClick={shuffleArt}
+                    disabled={isAnimating}
+                    className="p-2 bg-ai-purple/20 text-ai-purple rounded-lg hover:bg-ai-purple/30 transition-colors disabled:opacity-50"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Shuffle size={16} />
+                  </motion.button>
+                )}
                 <motion.button
                   onClick={onClose}
                   className="p-2 bg-red-500/20 text-red-400 rounded-lg hover:bg-red-500/30 transition-colors"
@@ -90,60 +241,133 @@ const ASCIIArtComponent: React.FC<ASCIIArtProps> = ({ isVisible, onClose }) => {
               </div>
             </div>
 
-            {/* ASCII Art Display */}
-            <div className="bg-black rounded-lg p-4 font-mono text-ai-green text-sm leading-tight min-h-[200px] flex flex-col justify-center">
-              <div className="text-center">
-                {animatedLines.map((line, index) => (
-                  <motion.div
-                    key={index}
-                    initial={{ opacity: 0, x: -20 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: index * 0.1 }}
-                    className="whitespace-pre-line"
-                  >
-                    {line}
-                  </motion.div>
-                ))}
-                {isAnimating && (
-                  <motion.span
-                    animate={{ opacity: [1, 0] }}
-                    transition={{ repeat: Infinity, duration: 0.8 }}
-                    className="text-ai-cyan"
-                  >
-                    ▌
-                  </motion.span>
-                )}
+            {/* Toggle between Upload and Gallery */}
+            <div className="flex justify-center mb-4">
+              <div className="bg-gray-800 p-1 rounded-lg inline-flex">
+                <button
+                  onClick={() => setShowUpload(false)}
+                  className={`px-4 py-1 rounded-md text-sm transition ${
+                    !showUpload ? 'bg-ai-cyan/20 text-ai-cyan' : 'text-gray-400 hover:text-gray-200'
+                  }`}
+                >
+                  Gallery
+                </button>
+                <button
+                  onClick={() => setShowUpload(true)}
+                  className={`px-4 py-1 rounded-md text-sm transition ${
+                    showUpload ? 'bg-ai-cyan/20 text-ai-cyan' : 'text-gray-400 hover:text-gray-200'
+                  }`}
+                >
+                  Convert Image
+                </button>
               </div>
             </div>
 
-            {/* Art Selection */}
-            <div className="mt-4 flex gap-2 justify-center flex-wrap">
-              {ASCII_ART_COLLECTION.map((art, index) => (
-                <motion.button
-                  key={art.id}
-                  onClick={() => {
-                    if (!isAnimating && currentArt.id !== art.id) {
-                      setCurrentArt(art);
-                      typewriterEffect(art);
-                    }
-                  }}
-                  disabled={isAnimating}
-                  className={`px-3 py-1 rounded-lg text-xs transition-colors disabled:opacity-50 ${
-                    currentArt.id === art.id
-                      ? 'bg-ai-cyan/20 text-ai-cyan border border-ai-cyan'
-                      : 'bg-gray-700 text-gray-300 hover:bg-gray-600'
+            {/* Image Upload Area */}
+            {showUpload && (
+              <div className="mb-4">
+                <div
+                  className={`bg-black rounded-lg p-6 border-2 border-dashed transition-colors flex flex-col items-center justify-center min-h-[200px] ${
+                    isDragging ? 'border-ai-cyan bg-ai-cyan/5' : 'border-gray-700'
                   }`}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
+                  onDrop={handleDrop}
+                  onDragOver={handleDragOver}
+                  onDragLeave={handleDragLeave}
+                  onClick={triggerFileInput}
                 >
-                  {art.name}
-                </motion.button>
+                  {isProcessing ? (
+                    <div className="text-center">
+                      <div className="w-12 h-12 border-4 border-ai-cyan/20 border-t-ai-cyan rounded-full animate-spin mx-auto mb-3"></div>
+                      <p className="text-ai-cyan">Processing image...</p>
+                    </div>
+                  ) : (
+                    <>
+                      <Upload className="text-ai-cyan mb-3" size={32} />
+                      <p className="text-gray-400 text-center mb-2">Drag & drop an image here</p>
+                      <p className="text-gray-500 text-xs text-center">or click to browse files</p>
+                    </>
+                  )}
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleFileInputChange}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                </div>
+
+                {/* Image conversion options */}
+                <div className="mt-4 bg-gray-800/50 rounded-lg p-3">
+                  <div className="text-sm text-gray-300 font-medium mb-2 flex items-center">
+                    <Sliders size={14} className="mr-1" /> Conversion Options
+                  </div>
+                  <div className="grid grid-cols-2 gap-3">
+                    <div>
+                      <label className="text-xs text-gray-400">Density</label>
+                      <select
+                        value={options.density}
+                        onChange={(e) => setOptions({...options, density: e.target.value})}
+                        className="w-full bg-gray-700 text-gray-200 rounded px-2 py-1 text-sm"
+                        disabled={isProcessing}
+                      >
+                        <option value="low">Low</option>
+                        <option value="medium">Medium</option>
+                        <option value="high">High</option>
+                      </select>
+                    </div>
+                    <div>
+                      <label className="text-xs text-gray-400 flex items-center">
+                        <Contrast size={12} className="mr-1" /> Contrast
+                      </label>
+                      <input
+                        type="range"
+                        min="0.5"
+                        max="2"
+                        step="0.1"
+                        value={options.contrast}
+                        onChange={(e) => setOptions({...options, contrast: parseFloat(e.target.value)})}
+                        className="w-full accent-ai-cyan"
+                        disabled={isProcessing}
+                      />
+                      <div className="text-xs text-gray-500 text-right">{options.contrast.toFixed(1)}x</div>
+                    </div>
+                    <div className="flex items-center">
+                      <label className="text-xs text-gray-400 mr-2">Invert</label>
+                      <input
+                        type="checkbox"
+                        checked={options.invert}
+                        onChange={(e) => setOptions({...options, invert: e.target.checked})}
+                        className="accent-ai-cyan h-4 w-4 rounded"
+                        disabled={isProcessing}
+                      />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Hidden canvas for image processing */}
+            <canvas ref={canvasRef} className="hidden" />
+
+            {/* ASCII Art Display */}
+            <div className="bg-black rounded-lg p-3 overflow-auto max-h-[60vh] font-mono text-xs">
+              {animatedLines.map((line, index) => (
+                <motion.div
+                  key={`line-${index}`}
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  className="whitespace-pre text-ai-cyan leading-[0.8]"
+                >
+                  {line}
+                </motion.div>
               ))}
             </div>
 
-            {/* Easter Egg Info */}
-            <div className="mt-4 text-center text-xs text-gray-500">
-              <p>🎨 ASCII Art Easter Egg • Press different arrow combinations for more surprises!</p>
+            {/* Footer with attribution */}
+            <div className="mt-4 text-xs text-gray-500 text-center">
+              {showUpload ? 
+                "Upload any image to convert to ASCII art in real-time" : 
+                `ASCII Art Collection • ${ASCII_ART_COLLECTION.length} designs available`}
             </div>
           </motion.div>
         </motion.div>
