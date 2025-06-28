@@ -48,7 +48,7 @@ const About = () => {
             </p>
 
             <p className="text-lg text-ai-light/80 leading-relaxed">
-              From developing AI models for defense applications at <span className="text-ai-cyan font-semibold">DRDO</span> 
+              From developing AI models for defense applications at <span className="text-ai-cyan font-semibold">DRDO </span> 
               to creating recommendation engines for space technology at <span className="text-ai-green font-semibold">ISRO</span>, 
               and building large language models at <span className="text-ai-purple font-semibold">Samsung R&D</span>, 
               I've consistently delivered innovative solutions that push the boundaries of what's possible.
