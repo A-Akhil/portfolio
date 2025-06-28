@@ -90,17 +90,19 @@ const EasterEggManager: React.FC = () => {
   }, []);
 
   const handleKonamiActivated = () => {
+    // First update the state
     setEasterEggState(prev => ({
       ...prev,
       konamiActivated: true
     }));
 
+    // Show the panel
     setShowEasterEggPanel(true);
-    setKonamiProgress(0); // Reset progress after activation
-
-    // Save Konami activation state to localStorage
+    
+    // Save state to localStorage
     localStorage.setItem('konamiActivated', 'true');
 
+    // Show notification toast
     toast('🎮 Konami Code Activated! Easter eggs unlocked!', {
       duration: 4000,
       style: {
@@ -111,9 +113,13 @@ const EasterEggManager: React.FC = () => {
       icon: '🎮'
     });
 
+    // Log to console
     console.log(`%c🎮 Konami Code Activated! Easter eggs unlocked and saved to session!`, 'color: #00FF88; font-size: 16px; font-weight: bold;');
-
-    // Don't auto-open easter eggs - let user choose from panel
+    
+    // Force re-render of the easter egg panel by using a timeout
+    setTimeout(() => {
+      setShowEasterEggPanel(true);
+    }, 100);
   };
 
   const handleKonamiProgress = (progress: number) => {
@@ -219,19 +225,14 @@ const EasterEggManager: React.FC = () => {
 
   return (
     <>
-      {/* Konami Code Detector */}
+      {/* Konami Code Detector - Silent until activation */}
       <KonamiDetector
         onKonamiActivated={handleKonamiActivated}
         isActivated={easterEggState.konamiActivated}
         onProgressChange={handleKonamiProgress}
       />
-
-      {/* Konami Progress Indicator */}
-      <KonamiProgress
-        isVisible={!easterEggState.konamiActivated}
-        progress={konamiProgress}
-        totalKeys={KONAMI_CODE.length}
-      />
+      
+      {/* No progress indicator - completely hidden to keep Konami code secret */}
 
       {/* Console Messages */}
       <ConsoleMessages
