@@ -11,7 +11,7 @@ const LoadingScreen = ({ onComplete }: LoadingScreenProps) => {
   useEffect(() => {
     const timer = setTimeout(() => {
       onComplete();
-    }, 2300); // Slightly faster to allow for crossfade
+    }, 1000); // Slightly faster to allow for crossfade
 
     return () => clearTimeout(timer);
   }, [onComplete]);

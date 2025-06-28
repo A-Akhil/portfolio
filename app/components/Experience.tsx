@@ -3,51 +3,15 @@
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
+import portfolioData from '../data/portfolioData';
 
 const Experience = () => {
+  const { experiences } = portfolioData;
+  
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
-
-  const experiences = [
-    {
-      title: 'Research Intern',
-      company: 'Defence Research & Development Organisation (CAIR-DRDO)',
-      location: 'India',
-      period: 'December 2024 – Present',
-      description: 'Developing an advanced web scraper leveraging LLM capabilities to efficiently extract and analyze data from websites.',
-      technologies: ['Python', 'LLM', 'Web Scraping', 'Data Analysis'],
-      color: 'from-red-500 to-red-600',
-    },
-    {
-      title: 'Intern',
-      company: 'Indian Space Research Organisation (ISSDC-ISRO)',
-      location: 'India',
-      period: 'December 2024 – January 2025',
-      description: 'Developed a recommendation engine for the PRADAN website by ISSDC, enhancing user experience and data accessibility for ISRO.',
-      technologies: ['Python', 'Machine Learning', 'Recommendation Systems', 'Web Development'],
-      color: 'from-blue-500 to-blue-600',
-    },
-    {
-      title: 'Research Intern',
-      company: 'Defence Research & Development Organisation (CVRDE-DRDO)',
-      location: 'India',
-      period: 'July 2024 – August 2024',
-      description: 'Developed an AI model achieving 92% accuracy in predicting the remaining lifespan of BLDC motors and identifying faults in real-time during operation for Armoured Fighting Vehicles (AFVs). Reduced diagnostic time by 80%.',
-      technologies: ['AI/ML', 'Predictive Analytics', 'Real-time Systems', 'Python'],
-      color: 'from-green-500 to-green-600',
-    },
-    {
-      title: 'Research Intern',
-      company: 'Samsung R&D Institute',
-      location: 'India',
-      period: 'January 2024 – July 2024',
-      description: 'Developed a Generative AI Large Language Model integrated with a web scraper that analyzed over 10,000 products and reviews, achieving 85% accuracy in sentiment analysis and data classification. Reduced processing time by 60%.',
-      technologies: ['Generative AI', 'LLM', 'NLP', 'Sentiment Analysis', 'Web Scraping'],
-      color: 'from-purple-500 to-purple-600',
-    },
-  ];
 
   return (
     <section id="experience" className="py-20 px-4 relative bg-ai-gray/10">
