@@ -3,6 +3,8 @@
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { Terminal } from 'lucide-react';
+import Link from 'next/link';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -69,7 +71,7 @@ const Navigation = () => {
           </motion.div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex space-x-8">
+          <div className="hidden md:flex space-x-8 items-center">
             {navItems.map((item) => (
               <motion.button
                 key={item.name}
@@ -93,6 +95,19 @@ const Navigation = () => {
                 )}
               </motion.button>
             ))}
+            
+            {/* Terminal Link */}
+            <Link href="/terminal">
+              <motion.button
+                className="flex items-center gap-2 px-3 py-2 text-sm font-medium text-green-400 border border-green-400/30 rounded-lg hover:bg-green-400/10 hover:border-green-400 transition-all"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                title="Interactive Terminal"
+              >
+                <Terminal size={16} />
+                Terminal
+              </motion.button>
+            </Link>
           </div>
 
           {/* Mobile menu button */}
@@ -133,6 +148,19 @@ const Navigation = () => {
                 {item.name}
               </motion.button>
             ))}
+            
+            {/* Mobile Terminal Link */}
+            <Link href="/terminal">
+              <motion.button
+                onClick={() => setIsOpen(false)}
+                className="flex items-center gap-2 w-full text-left px-3 py-2 text-base font-medium text-green-400 border border-green-400/30 rounded-lg hover:bg-green-400/10 hover:border-green-400 transition-all mt-4"
+                whileHover={{ x: 10 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Terminal size={18} />
+                Interactive Terminal
+              </motion.button>
+            </Link>
           </div>
         </motion.div>
       </div>
