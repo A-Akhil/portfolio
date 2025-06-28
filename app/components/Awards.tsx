@@ -18,7 +18,7 @@ const Awards = () => {
       description: 'Won First Prize at the national-level MIT Anna University Hackathon, competing against top teams from across the college.',
       icon: FaTrophy,
       color: 'from-yellow-400 to-yellow-600',
-      year: '2024',
+      year: '2025',
     },
     {
       title: 'IEEE GRSS Hackathon for Data Driven AI in Remote Sensing',
@@ -27,7 +27,7 @@ const Awards = () => {
       description: 'Won First Prize at the college-level IEEE GRSS Hackathon for Data-Driven AI in Remote Sensing, supported by NASA.',
       icon: FaTrophy,
       color: 'from-blue-400 to-blue-600',
-      year: '2024',
+      year: '2025',
     },
     {
       title: 'Smart Campus Hackathon',
@@ -36,7 +36,7 @@ const Awards = () => {
       description: 'Secured First Place in Smart Campus Hackathon organized by SRM Institute of Science and Technology, competing against 100+ teams.',
       icon: FaMedal,
       color: 'from-green-400 to-green-600',
-      year: '2024',
+      year: '2023',
     },
     {
       title: 'Smart India Hackathon',
@@ -54,7 +54,7 @@ const Awards = () => {
       description: 'Selected for the final round in Dark Pattern Buster Hackathon, among 5000+ participants.',
       icon: FaStar,
       color: 'from-red-400 to-red-600',
-      year: '2024',
+      year: '2023',
     },
   ];
 
