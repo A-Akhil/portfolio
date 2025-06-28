@@ -54,7 +54,10 @@ const KonamiDetector: React.FC<KonamiDetectorProps> = ({
         
         if (matches && !isActivated) {
           console.log('🎮 KONAMI CODE ACTIVATED! 🎮');
-          onKonamiActivated();
+          // Defer the callback to avoid React warning about updating during render
+          setTimeout(() => {
+            onKonamiActivated();
+          }, 0);
           return [];
         }
       }
