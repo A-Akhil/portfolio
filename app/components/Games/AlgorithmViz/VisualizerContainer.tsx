@@ -118,6 +118,9 @@ const VisualizerContainer: React.FC = () => {
       clearTimeout(animationRef.current);
     }
 
+    // Auto-select search target from the middle of the array
+    const autoTarget = array[Math.floor(array.length / 2)];
+
     setVisualizerState(prev => ({
       ...prev,
       array: [...array],
@@ -129,10 +132,11 @@ const VisualizerContainer: React.FC = () => {
       isComplete: false,
       comparisons: 0,
       swaps: 0,
-      timeElapsed: 0
+      timeElapsed: 0,
+      searchTarget: autoTarget // Auto-select search target
     }));
 
-    toast.success(`Array with ${array.length} elements loaded`, {
+    toast.success(`Array loaded with auto-selected target: ${autoTarget}`, {
       duration: 2000,
       style: {
         background: '#1a1a2e',
@@ -512,40 +516,55 @@ const VisualizerContainer: React.FC = () => {
           </div>
         </div>
 
-        {/* Search Target Input (when searching) */}
+        {/* Search Target Input (when searching) - Auto-select */}
         {algorithmType === 'searching' && (
           <div className="mt-4 pt-4 border-t border-gray-600">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div className="flex items-center justify-between">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Search Target
+                  Search Target: <span className="text-ai-cyan font-bold">{visualizerState.searchTarget || 'Auto-selected'}</span>
                 </label>
-                <input
-                  type="number"
-                  value={visualizerState.searchTarget || ''}
-                  onChange={(e) => handleSearchTargetChange(Number(e.target.value))}
-                  placeholder="Enter target value"
-                  className="w-full px-3 py-2 bg-gray-700 border border-gray-600 rounded-lg text-white focus:border-ai-cyan focus:outline-none"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Quick Select
-                </label>
-                <div className="flex gap-2">
-                  {visualizerState.array.slice(0, 4).map((value, index) => (
-                    <motion.button
-                      key={index}
-                      onClick={() => handleSearchTargetChange(value)}
-                      className="px-3 py-2 bg-ai-purple/20 text-ai-purple border border-ai-purple rounded-lg hover:bg-ai-purple/30 text-sm"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      {value}
-                    </motion.button>
-                  ))}
+                <div className="text-xs text-gray-400">
+                  Auto-selected from array. Click values below to change.
                 </div>
               </div>
+              <motion.button
+                onClick={() => {
+                  if (visualizerState.array.length > 0) {
+                    const randomTarget = visualizerState.array[Math.floor(Math.random() * visualizerState.array.length)];
+                    handleSearchTargetChange(randomTarget);
+                  }
+                }}
+                className="px-3 py-2 bg-ai-purple/20 text-ai-purple border border-ai-purple rounded-lg hover:bg-ai-purple/30 text-sm"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                Random Target
+              </motion.button>
+            </div>
+            <div className="mt-3 flex gap-2 flex-wrap">
+              {visualizerState.array.slice(0, 8).map((value, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => handleSearchTargetChange(value)}
+                  className={`
+                    px-3 py-2 rounded-lg text-sm font-medium transition-all duration-300
+                    ${visualizerState.searchTarget === value
+                      ? 'bg-ai-cyan/30 text-ai-cyan border border-ai-cyan'
+                      : 'bg-ai-purple/20 text-ai-purple border border-ai-purple hover:bg-ai-purple/30'
+                    }
+                  `}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  {value}
+                </motion.button>
+              ))}
+              {visualizerState.array.length > 8 && (
+                <span className="px-3 py-2 text-gray-400 text-sm">
+                  +{visualizerState.array.length - 8} more
+                </span>
+              )}
             </div>
           </div>
         )}
