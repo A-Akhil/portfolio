@@ -13,6 +13,7 @@ import Navigation from './components/Navigation';
 import BackgroundAnimation from './components/BackgroundAnimation';
 import LoadingScreen from './components/LoadingScreen';
 import GameLauncher from './components/Games/GameLauncher';
+import EasterEggManager from './components/EasterEggs/EasterEggManager';
 
 export default function Home() {
   const [mounted, setMounted] = useState(false);
@@ -83,6 +84,9 @@ export default function Home() {
             
             {/* Game Launcher - Available after loading */}
             <GameLauncher />
+            
+            {/* Easter Egg Manager - Hidden features and developer spice */}
+            <EasterEggManager />
           </motion.main>
         )}
       </AnimatePresence>

@@ -8,6 +8,12 @@
 :root {
   color-scheme: dark;
   background-color: #0A0A0F;
+  
+  /* Easter Egg Theme Variables - Can be overridden by Hex Color Picker */
+  --color-ai-cyan: #00CCFF;
+  --color-ai-purple: #8B00FF;
+  --color-ai-green: #00FF88;
+  --color-ai-blue: #0066FF;
 }
 
 html {
