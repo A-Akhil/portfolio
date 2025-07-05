@@ -7,6 +7,7 @@ import About from './components/About';
 import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
+import GitHubIntegration from './components/GitHub/GitHubIntegration';
 import Awards from './components/Awards';
 import Contact from './components/Contact';
 import Navigation from './components/Navigation';
@@ -78,6 +79,29 @@ export default function Home() {
               <Experience />
               <Projects />
               <Skills />
+              
+              {/* GitHub Integration Section */}
+              <section id="github" className="py-20 bg-gradient-to-br from-ai-dark/50 to-ai-gray/30">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                  <motion.div
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.8 }}
+                    viewport={{ once: true }}
+                    className="text-center mb-12"
+                  >
+                    <h2 className="text-4xl md:text-5xl font-bold gradient-text mb-4">
+                      Development Activity
+                    </h2>
+                    <p className="text-xl text-ai-light/80 max-w-2xl mx-auto">
+                      Real-time insights into my coding journey and open-source contributions
+                    </p>
+                  </motion.div>
+                  
+                  <GitHubIntegration />
+                </div>
+              </section>
+              
               <Awards />
               <Contact />
             </motion.div>
