@@ -1,5 +1,8 @@
 'use client';
 
+// Add Cloudflare Edge runtime configuration
+export const runtime = 'edge';
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import TerminalInterface from '../components/Terminal/TerminalInterface';

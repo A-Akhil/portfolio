@@ -1,5 +1,8 @@
 'use client';
 
+// Add Cloudflare Edge runtime configuration
+export const runtime = 'edge';
+
 import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Hero from './components/Hero';
