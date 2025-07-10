@@ -16,6 +16,13 @@ export interface ASCIIArt {
   name: string;
   art: string[];
   description: string;
+  isCustom?: boolean; // Flag to identify custom generated ASCII art
+}
+
+export interface CustomASCIIArtOptions {
+  density: string;
+  contrast: number;
+  invert: boolean;
 }
 
 export interface ConsoleMessage {

@@ -12,8 +12,6 @@ const About = () => {
   const stats = [
     { number: '4+', label: 'Research Internships' },
     { number: '15+', label: 'AI/ML Projects' },
-    { number: '92%', label: 'Best Model Accuracy' },
-    { number: '5+', label: 'National Awards' },
   ];
 
   return (
