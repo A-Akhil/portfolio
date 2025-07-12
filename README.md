@@ -9,6 +9,7 @@ A modern, animated portfolio website showcasing AI/ML expertise, research experi
 - **Responsive Design**: Optimized for all devices and screen sizes
 - **Performance Optimized**: Built with Next.js for fast loading and SEO
 - **Modern Tech Stack**: React 18, Next.js 14, TypeScript, Tailwind CSS, Framer Motion
+- **Centralized Data Management**: Single source of truth for all portfolio content
 
 ## 🛠️ Tech Stack
 
@@ -40,11 +41,30 @@ npm run dev
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
+## 📝 Updating Portfolio Content
+
+All portfolio information is centralized in a single file: `app/data/portfolioData.ts`
+
+To update your information:
+
+1. Edit the `portfolioData` object in this file
+2. Content is organized by sections:
+   - `personalInfo`: Basic information, bio, and contact details
+   - `experiences`: Work and research experiences
+   - `projects`: Featured projects with descriptions
+   - `skills`: Technical skills categorized by type
+   - `awards`: Awards and recognitions
+   - `education`: Educational background
+
+No need to modify individual components - just update this file and changes will be reflected across the entire site!
+
 ## 🏗️ Project Structure
 
 ```
 ├── app/
 │   ├── components/     # React components
+│   ├── data/
+│   │   └── portfolioData.ts  # Centralized portfolio data
 │   ├── globals.css     # Global styles
 │   ├── layout.tsx      # Root layout
 │   └── page.tsx        # Home page
@@ -95,14 +115,18 @@ npm start
 - Image optimization with Next.js
 - Code splitting and lazy loading
 
-## 🤝 Contributing
+## Contributing
+Contributions are welcome! Please submit a pull request or open an issue for any enhancements or bug fixes.
 
-Contributions, issues, and feature requests are welcome!
+[![Contributors](https://contrib.rocks/image?repo=A-Akhil/CertiMaster)](https://github.com/A-Akhil/CertiMaster/graphs/contributors)
 
-## 📄 License
+## License
+This project is licensed under the MIT License. See the LICENSE file for details.
 
-This project is licensed under the MIT License.
+<div align="center">
 
----
+## Please support the development by donating.
 
-Built with ❤️ by A Akhil
+[![BuyMeACoffee](https://img.shields.io/badge/Buy%20Me%20a%20Coffee-ffdd00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/aakhil)
+
+</div>
