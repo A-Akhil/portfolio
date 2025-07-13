@@ -448,6 +448,123 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
     }
     const lowerQuestion = question.toLowerCase();
     
+    // Check for name question
+    if (lowerQuestion.match(/(?:what|who)(?:'s| is| are)?\s+(?:your|the)?\s*(?:name|called)/i)) {
+      return [
+        {
+          type: 'info',
+          content: '👋 Personal Information:',
+          timestamp: new Date()
+        },
+        {
+          type: 'output',
+          content: `My name is ${this.portfolioData.about.name}. I'm a ${this.portfolioData.about.title}.`,
+          timestamp: new Date()
+        }
+      ];
+    }
+    
+    // Enhanced regex matching for specific company experiences
+    // Match queries like "what did you do at ISRO" or "tell me about your work at DRDO"
+    const companyRegex = /(?:what|tell|about|you|your|work|do|did|experience|role|responsibility|responsibilities|project|projects)\s+(?:at|in|with|for)?\s*([a-z\-]+)/i;
+    const companyAltRegex = /([a-z\-]{2,})\s+(?:work|experience|project|role|job|internship)/i;
+    
+    let companyMatches = lowerQuestion.match(companyRegex);
+    if (!companyMatches) {
+      companyMatches = lowerQuestion.match(companyAltRegex);
+    }
+    
+    if (companyMatches && companyMatches[1]) {
+      const keywordFromQuestion = companyMatches[1].toLowerCase().trim();
+      
+      // Use a data-driven approach to find matching experiences
+      // Search directly in the company names and descriptions
+      const matchedExperience = this.portfolioData.experience.filter(exp => {
+        const companyLower = exp.company.toLowerCase();
+        const descLower = exp.description.toLowerCase();
+        
+        // Check if the company name or description contains the keyword
+        return companyLower.includes(keywordFromQuestion) || 
+               descLower.includes(keywordFromQuestion);
+      });
+      
+      if (matchedExperience.length > 0) {
+        return [
+          {
+            type: 'info',
+            content: `🔬 My Experience at ${matchedExperience[0].company}:`,
+            timestamp: new Date()
+          },
+          ...matchedExperience.map(exp => ({
+            type: 'output' as const,
+            content: `• Position: ${exp.position}\n• Duration: ${exp.duration}\n• Description: ${exp.description}\n\nAchievements:${exp.achievements.map(achievement => `\n- ${achievement}`).join('')}`,
+            timestamp: new Date()
+          }))
+        ];
+      }
+      
+      // If no experience match, try matching project by keyword from question
+      const projectKeyword = keywordFromQuestion;
+      const matchedProjects = this.portfolioData.projects.filter(project => 
+        project.name.toLowerCase().includes(projectKeyword) || 
+        project.description.toLowerCase().includes(projectKeyword) ||
+        project.technologies.some(tech => tech.toLowerCase().includes(projectKeyword))
+      );
+      
+      if (matchedProjects.length > 0) {
+        return [
+          {
+            type: 'info',
+            content: `🚀 Projects related to "${companyMatches[1]}":`,
+            timestamp: new Date()
+          },
+          ...matchedProjects.map(project => ({
+            type: 'output' as const,
+            content: `• ${project.name}: ${project.description}\n  Technologies: ${project.technologies.join(', ')}\n  ${project.accuracy ? `Accuracy/Metrics: ${project.accuracy}` : ''}`,
+            timestamp: new Date()
+          }))
+        ];
+      }
+    }
+    
+    // Project topic matching - look for specific technologies or domains in projects
+    // Enhanced to capture more variations of language/technology queries
+    const techMatchRegexes = [
+      /(?:project|projects)?\s+(?:with|using|about|on|in)\s+([a-z\s]+)/i,
+      /([a-z\s]+)\s+(?:project|projects)/i,
+      /tell\s+(?:me)?\s+about\s+(?:your)?\s+([a-z\s]+)\s+(?:project|projects)/i
+    ];
+    
+    let techMatches = null;
+    for (const regex of techMatchRegexes) {
+      techMatches = lowerQuestion.match(regex);
+      if (techMatches && techMatches[1]) break;
+    }
+    
+    if (techMatches && techMatches[1]) {
+      const techKeyword = techMatches[1].toLowerCase().trim();
+      const matchedProjects = this.portfolioData.projects.filter(project => 
+        project.technologies.some(tech => tech.toLowerCase().includes(techKeyword)) ||
+        project.description.toLowerCase().includes(techKeyword) ||
+        project.name.toLowerCase().includes(techKeyword)
+      );
+      
+      if (matchedProjects.length > 0) {
+        return [
+          {
+            type: 'info',
+            content: `🚀 Projects related to "${techMatches[1]}":`,
+            timestamp: new Date()
+          },
+          ...matchedProjects.map(project => ({
+            type: 'output' as const,
+            content: `• ${project.name}: ${project.description}\n  Technologies: ${project.technologies.join(', ')}${project.accuracy ? `\n  Accuracy/Metrics: ${project.accuracy}` : ''}`,
+            timestamp: new Date()
+          }))
+        ];
+      }
+    }
+    
     if (lowerQuestion.includes('experience') || lowerQuestion.includes('work') || lowerQuestion.includes('internship')) {
       return [
         {
@@ -664,13 +781,13 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
       if (dir.children) {
         const children = [...dir.children];
         for (let i = 0; i < children.length; i++) {
-          const child = children[i];
+          const childItem = children[i];
           const isLastChild = i === children.length - 1;
           
-          if (child.type === 'directory') {
-            result.push(...buildTree(child, childPrefix, isLastChild));
+          if (childItem.type === 'directory') {
+            result.push(...buildTree(childItem, childPrefix, isLastChild));
           } else {
-            result.push(childPrefix + (isLastChild ? '└── ' : '├── ') + child.name);
+            result.push(childPrefix + (isLastChild ? '└── ' : '├── ') + childItem.name);
           }
         }
       }
