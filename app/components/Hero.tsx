@@ -109,14 +109,18 @@ const Hero = () => {
           variants={itemVariants}
           className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12"
         >
-          <motion.button
+          <motion.a
+            href={personalInfo.resumeUrl && personalInfo.resumeUrl !== '/resume.pdf' ? personalInfo.resumeUrl : "/Akhil_resume.pdf"}
+            download="A_Akhil_Resume.pdf"
+            target="_blank"
+            rel="noopener noreferrer"
             whileHover={{ scale: 1.05, boxShadow: "0 0 30px #00CCFF" }}
             whileTap={{ scale: 0.95 }}
             className="px-8 py-4 bg-gradient-to-r from-ai-cyan to-ai-blue text-white font-semibold rounded-full hover-glow transition-all duration-300 flex items-center gap-3"
           >
             <FaDownload />
             Download Resume
-          </motion.button>
+          </motion.a>
 
           <motion.button
             whileHover={{ scale: 1.05 }}
