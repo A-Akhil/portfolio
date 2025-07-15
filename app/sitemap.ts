@@ -1,27 +1,26 @@
 import { MetadataRoute } from 'next';
 
-// Define base URL for canonical links and absolute URLs
-const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://devakhil.com';
+// In Next.js App Router, we should use relative URLs in the sitemap
+// https://nextjs.org/docs/app/api-reference/file-conventions/metadata/sitemap
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const currentDate = new Date().toISOString();
   
   // Define the routes that should be included in the sitemap
-  const routes = [
+  // Note: URLs should be relative without domain
+  return [
     {
-      url: `${baseUrl}/`,
+      url: '/',
       lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
+      changeFrequency: 'monthly',
       priority: 1,
     },
     {
-      url: `${baseUrl}/terminal`,
+      url: '/terminal',
       lastModified: currentDate,
-      changeFrequency: 'monthly' as const,
+      changeFrequency: 'monthly',
       priority: 0.8,
     },
     // Add other routes as they become available
   ];
-
-  return routes;
 }
