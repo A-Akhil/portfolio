@@ -33,7 +33,7 @@ const GitHubIntegration: React.FC = () => {
 
       // Fetch repositories
       const reposResponse = await fetch(
-        `https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=6`
+        `https://api.github.com/users/${USERNAME}/repos?sort=updated&per_page=20`
       );
       if (!reposResponse.ok) {
         throw new Error('Failed to fetch repositories');
