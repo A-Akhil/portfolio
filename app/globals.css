@@ -10,10 +10,13 @@
   background-color: #0A0A0F;
   
   /* Easter Egg Theme Variables - Can be overridden by Hex Color Picker */
-  --color-ai-cyan: #00CCFF;
-  --color-ai-purple: #8B00FF;
-  --color-ai-green: #00FF88;
-  --color-ai-blue: #0066FF;
+  --color-ai-cyan: 0 204 255;
+  --color-ai-purple: 139 0 255;
+  --color-ai-green: 0 255 136;
+  --color-ai-blue: 0 102 255;
+  --color-ai-dark: 10 10 15;
+  --color-ai-gray: 26 26 46;
+  --color-ai-light: 226 232 240;
 }
 
 html {
@@ -57,12 +60,12 @@ html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
 }
 
 ::-webkit-scrollbar-thumb {
-  background: linear-gradient(135deg, #00CCFF, #0066FF);
+  background: linear-gradient(135deg, rgb(var(--color-ai-cyan)), rgb(var(--color-ai-purple)));
   border-radius: 10px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(135deg, #00FF88, #00CCFF);
+  background: linear-gradient(135deg, rgb(var(--color-ai-green)), rgb(var(--color-ai-cyan)));
 }
 
 /* Animated background particles */
@@ -80,7 +83,7 @@ html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
   position: absolute;
   width: 2px;
   height: 2px;
-  background: #00CCFF;
+  background: rgb(var(--color-ai-cyan));
   border-radius: 50%;
   animation: float 6s ease-in-out infinite;
 }
@@ -89,7 +92,7 @@ html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
 .neural-line {
   position: absolute;
   height: 1px;
-  background: linear-gradient(90deg, transparent, #00CCFF, transparent);
+  background: linear-gradient(90deg, transparent, rgb(var(--color-ai-cyan)), transparent);
   animation: pulse-slow 3s ease-in-out infinite;
 }
 
@@ -110,13 +113,13 @@ html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
 
 .glitch::before {
   animation: glitch-1 2s infinite;
-  color: #00CCFF;
+  color: rgb(var(--color-ai-cyan));
   z-index: -1;
 }
 
 .glitch::after {
   animation: glitch-2 2s infinite;
-  color: #FF0080;
+  color: rgb(var(--color-ai-purple));
   z-index: -2;
 }
 
@@ -138,7 +141,7 @@ html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
 
 /* Typing effect */
 .typing-effect {
-  border-right: 2px solid #00CCFF;
+  border-right: 2px solid rgb(var(--color-ai-cyan));
   white-space: nowrap;
   overflow: hidden;
   animation: typing 3.5s steps(40, end), blink-caret .75s step-end infinite;
@@ -146,7 +149,7 @@ html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
 
 /* Gradient text */
 .gradient-text {
-  background: linear-gradient(135deg, #00CCFF, #0066FF, #8B00FF);
+  background: linear-gradient(135deg, rgb(var(--color-ai-cyan)), rgb(var(--color-ai-purple)), rgb(var(--color-ai-green)));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -154,7 +157,7 @@ html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
 
 /* Hover effects */
 .hover-glow:hover {
-  box-shadow: 0 0 20px #00CCFF, 0 0 40px #00CCFF, 0 0 60px #00CCFF;
+  box-shadow: 0 0 20px rgb(var(--color-ai-cyan)), 0 0 40px rgb(var(--color-ai-cyan)), 0 0 60px rgb(var(--color-ai-cyan));
   transition: all 0.3s ease;
 }
 
@@ -177,7 +180,7 @@ html, body, #__next, [data-nextjs-scroll-focus-boundary], main {
 
 .matrix-char {
   position: absolute;
-  color: #00FF88;
+  color: rgb(var(--color-ai-green));
   font-family: 'Fira Code', monospace;
   font-size: 14px;
   animation: matrix 20s linear infinite;
