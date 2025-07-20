@@ -7,6 +7,7 @@ import toast from 'react-hot-toast';
 
 import KonamiDetector from './KonamiDetector';
 import KonamiProgress from './KonamiProgress';
+import KonamiActivationEffects from './KonamiActivationEffects';
 import ASCIIArt from './ASCIIArt';
 import BinaryClock from './BinaryClock';
 import HexColorPicker from './HexColorPicker';
@@ -26,6 +27,7 @@ const EasterEggManager: React.FC = () => {
   const [showEasterEggPanel, setShowEasterEggPanel] = useState(false);
   const [konamiProgress, setKonamiProgress] = useState(0);
   const [konamiActivationTime, setKonamiActivationTime] = useState<number | null>(null);
+  const [isActivatingKonami, setIsActivatingKonami] = useState(false);
 
   // Helper function to convert hex to RGB values
   const hexToRgb = (hex: string) => {
@@ -196,6 +198,9 @@ const EasterEggManager: React.FC = () => {
   const handleKonamiActivated = () => {
     const activationTime = Date.now();
     
+    // Start the activation effect immediately
+    setIsActivatingKonami(true);
+    
     // First update the state
     setEasterEggState(prev => ({
       ...prev,
@@ -203,24 +208,10 @@ const EasterEggManager: React.FC = () => {
       consoleMessagesActivated: true // Enable console messages when Konami is activated
     }));
 
-    // Show the panel
-    setShowEasterEggPanel(true);
-    
     // Save state and activation time to localStorage
     localStorage.setItem('konamiActivated', 'true');
     localStorage.setItem('konamiActivationTime', activationTime.toString());
     setKonamiActivationTime(activationTime);
-
-    // Show notification toast with timer info
-    toast('🎮 Konami Code Activated! (Active for 10 minutes)', {
-      duration: 4000,
-      style: {
-        background: '#1a1a2e',
-        color: '#00CCFF',
-        border: '1px solid #00CCFF'
-      },
-      icon: '🎮'
-    });
 
     // Log to console
     console.log(`%c🎮 Konami Code Activated! Easter eggs unlocked for 10 minutes!`, 'color: #00FF88; font-size: 16px; font-weight: bold;');
@@ -231,11 +222,23 @@ const EasterEggManager: React.FC = () => {
       (window as any).resetEasterEggs = resetEasterEggState;
       console.log(`%c🛠️  Debug: Call resetEasterEggs() in console to reset all easter egg state`, 'color: #FF6600; font-size: 12px;');
     }
+  };
+
+  const handleEffectComplete = () => {
+    // Effect completed, now show the panel and toast
+    setIsActivatingKonami(false);
+    setShowEasterEggPanel(true);
     
-    // Force re-render of the easter egg panel by using a timeout
-    setTimeout(() => {
-      setShowEasterEggPanel(true);
-    }, 100);
+    // Show notification toast with timer info
+    toast('🎮 Konami Code Activated! (Active for 10 minutes)', {
+      duration: 4000,
+      style: {
+        background: '#1a1a2e',
+        color: '#00CCFF',
+        border: '1px solid #00CCFF'
+      },
+      icon: '🎮'
+    });
   };
 
   const handleKonamiProgress = (progress: number) => {
@@ -424,6 +427,12 @@ const EasterEggManager: React.FC = () => {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {/* Konami Activation Effects */}
+      <KonamiActivationEffects
+        isActivating={isActivatingKonami}
+        onEffectComplete={handleEffectComplete}
+      />
 
       {/* Easter Egg Components */}
       <ASCIIArt
