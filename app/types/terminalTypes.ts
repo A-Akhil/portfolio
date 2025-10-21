@@ -19,40 +19,66 @@ export interface FileSystemItem {
   children?: FileSystemItem[];
 }
 
+export interface TerminalLink {
+  label: string;
+  url: string;
+  icon?: string;
+}
+
 export interface PortfolioData {
   about: {
     name: string;
-    title: string;
+    primaryTitle: string;
+    titles: string[];
+    summary: string;
     location: string;
     email: string;
-    phone: string;
-    linkedin: string;
-    github: string;
-    education: string;
+    phone?: string;
+    links: TerminalLink[];
+    education: string[];
+    bio: string[];
   };
   experience: Array<{
     company: string;
     position: string;
     duration: string;
-    description: string;
+    summary: string;
     achievements: string[];
+    technologies: string[];
   }>;
   projects: Array<{
     name: string;
     description: string;
     technologies: string[];
-    accuracy?: string;
+    metric?: {
+      label: string;
+      value: string;
+    };
     github?: string;
     demo?: string;
   }>;
   skills: {
-    languages: string[];
-    technologies: string[];
-    tools: string[];
+    categories: Array<{
+      id: string;
+      label: string;
+      skills: string[];
+    }>;
+    coreCompetencies: string[];
   };
   awards: Array<{
-    name: string;
+    title: string;
+    level: string;
     position: string;
     description: string;
+    year: string;
   }>;
+  contact: {
+    methods: Array<{
+      label: string;
+      value: string;
+      url: string;
+    }>;
+    location: string[];
+    footer?: string;
+  };
 }

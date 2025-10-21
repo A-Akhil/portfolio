@@ -2,8 +2,8 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaGithub, FaExternalLinkAlt, FaCode, FaBrain } from 'react-icons/fa';
-import portfolioData from '../data/portfolioData';
+import { FaGithub, FaExternalLinkAlt } from 'react-icons/fa';
+import { getPortfolioData } from '@/app/utils/getPortfolioData';
 
 const Projects = () => {
   const [ref, inView] = useInView({
@@ -11,19 +11,20 @@ const Projects = () => {
     threshold: 0.1,
   });
 
-  // Use projects from centralized data source
-  const { projects } = portfolioData;
-  
-  // Map to the format expected by the component
-  const formattedProjects = projects.map(project => ({
+  const { projects } = getPortfolioData();
+
+  const featuredProjects = projects.items.filter((project) => project.featured !== false);
+
+  const formattedProjects = featuredProjects.map((project, index) => ({
     title: project.title,
     description: project.description,
-    technologies: project.technologies,
-    accuracy: project.accuracy || '',
-    github: project.githubUrl || '#',
-    demo: project.demoUrl || '#',
-    gradient: project.gradient || project.color || 'from-blue-500 to-purple-600', // Use gradient or fallback to color
-    icon: project.icon || '🔬', // Default icon if none provided
+    technologies: project.technologies ?? [],
+    github: project.githubUrl ?? '#',
+    demo: project.demoUrl ?? '#',
+    metric: project.metric,
+    gradient: project.gradient ?? `from-ai-blue to-ai-purple`,
+    icon: project.icon ?? '🔬',
+    key: `${project.title}-${index}`,
   }));
 
   return (
@@ -37,18 +38,18 @@ const Projects = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-            Featured Projects
+            {projects.title}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-ai-cyan to-ai-blue mx-auto mb-8"></div>
           <p className="text-xl text-ai-light/70 max-w-3xl mx-auto">
-            Innovative AI/ML solutions solving real-world problems across various domains
+            {projects.description}
           </p>
         </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {formattedProjects.map((project, index) => (
             <motion.div
-              key={project.title}
+              key={project.key}
               initial={{ opacity: 0, y: 50 }}
               animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
               transition={{ duration: 0.8, delay: index * 0.1 }}
@@ -75,16 +76,18 @@ const Projects = () => {
                         <FaGithub size={20} />
                       </motion.a>
                     )}
-                    <motion.a
-                      href={project.demo}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      whileHover={{ scale: 1.1 }}
-                      whileTap={{ scale: 0.9 }}
-                      className="text-ai-light/60 hover:text-ai-cyan transition-colors"
-                    >
-                      <FaExternalLinkAlt size={18} />
-                    </motion.a>
+                    {project.demo !== '#' && project.demo ? (
+                      <motion.a
+                        href={project.demo}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        className="text-ai-light/60 hover:text-ai-cyan transition-colors"
+                      >
+                        <FaExternalLinkAlt size={18} />
+                      </motion.a>
+                    ) : null}
                   </div>
                 </div>
 
@@ -93,9 +96,12 @@ const Projects = () => {
                   <h3 className="text-xl font-bold text-ai-light mb-2 group-hover:text-ai-cyan transition-colors">
                     {project.title}
                   </h3>
-                  <div className="inline-block px-3 py-1 bg-ai-cyan/20 text-ai-cyan rounded-full text-sm font-semibold">
-                    {project.accuracy}
-                  </div>
+                  {project.metric?.value ? (
+                    <div className="inline-block px-3 py-1 bg-ai-cyan/20 text-ai-cyan rounded-full text-sm font-semibold">
+                      {project.metric.label ? `${project.metric.label}: ` : ''}
+                      {project.metric.value}
+                    </div>
+                  ) : null}
                 </div>
 
                 {/* Description */}
@@ -132,17 +138,19 @@ const Projects = () => {
           transition={{ duration: 0.8, delay: 0.5 }}
           className="text-center mt-12"
         >
-          <motion.a
-            href="https://github.com/A-Akhil"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-ai-blue to-ai-purple text-white font-semibold rounded-full hover-glow transition-all duration-300"
-          >
-            <FaGithub />
-            View All Projects on GitHub
-          </motion.a>
+          {projects.cta ? (
+            <motion.a
+              href={projects.cta.target}
+              target={projects.cta.newTab ? '_blank' : undefined}
+              rel={projects.cta.newTab ? 'noopener noreferrer' : undefined}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              className="inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-ai-blue to-ai-purple text-white font-semibold rounded-full hover-glow transition-all duration-300"
+            >
+              <FaGithub />
+              {projects.cta.label}
+            </motion.a>
+          ) : null}
         </motion.div>
       </div>
     </section>

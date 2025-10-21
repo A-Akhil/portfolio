@@ -43,20 +43,24 @@ npm run dev
 
 ## 📝 Updating Portfolio Content
 
-All portfolio information is centralized in a single file: `app/data/portfolioData.ts`
+All portfolio information now lives in a single JSON file: `app/data/portfolio.json`.
 
 To update your information:
 
-1. Edit the `portfolioData` object in this file
-2. Content is organized by sections:
-   - `personalInfo`: Basic information, bio, and contact details
-   - `experiences`: Work and research experiences
-   - `projects`: Featured projects with descriptions
-   - `skills`: Technical skills categorized by type
-   - `awards`: Awards and recognitions
-   - `education`: Educational background
+1. Edit the JSON structure in `app/data/portfolio.json`. Each top-level key mirrors a site section (e.g., `hero`, `about`, `experience`, `projects`, `skills`, `awards`, `contact`, `seo`).
+2. Run the validation script to ensure your changes conform to the schema:
+   ```bash
+   npm run "validate:data"
+   ```
+3. Review the console output; the script reports detailed paths for any schema violations. A green check message means the data is safe to commit.
 
-No need to modify individual components - just update this file and changes will be reflected across the entire site!
+Reference files:
+
+- `app/utils/portfolioSchema.ts`: Zod schema defining the expected JSON shape.
+- `app/utils/portfolioNormalizer.ts`: Applies defaults for optional fields so UI components stay lean.
+- `app/utils/getPortfolioData.ts`: Loader that parses, validates, caches, and exports the centralized data for both UI and terminal features.
+
+No component edits are required for simple content updates—modify the JSON, validate, and the site consumes the new data automatically once the refactor is complete.
 
 ## 🏗️ Project Structure
 
@@ -64,7 +68,11 @@ No need to modify individual components - just update this file and changes will
 ├── app/
 │   ├── components/     # React components
 │   ├── data/
-│   │   └── portfolioData.ts  # Centralized portfolio data
+│   │   └── portfolio.json        # Centralized portfolio content
+│   ├── utils/
+│   │   ├── getPortfolioData.ts    # Validated loader & cache
+│   │   ├── portfolioNormalizer.ts # Normalization helpers
+│   │   └── portfolioSchema.ts     # Zod schema definition
 │   ├── globals.css     # Global styles
 │   ├── layout.tsx      # Root layout
 │   └── page.tsx        # Home page
@@ -103,10 +111,10 @@ npm start
 
 ## 🔧 Customization
 
-1. Update personal information in components
-2. Modify color scheme in `tailwind.config.js`
-3. Add/remove sections as needed
-4. Customize animations in component files
+1. Update personal information in `app/data/portfolio.json` (and run `npm run "validate:data"`).
+2. Modify color scheme in `tailwind.config.js`.
+3. Add/remove sections as needed—adjust the schema and JSON before touching components.
+4. Customize animations in component files.
 
 ## 📊 Performance
 

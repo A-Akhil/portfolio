@@ -19,6 +19,42 @@ class CommandProcessor {
   }
 
   private initializeFileSystem(): void {
+    const aboutLines: string[] = [
+      `Name: ${this.portfolioData.about.name}`,
+      `Title: ${this.portfolioData.about.primaryTitle}`,
+      `Location: ${this.portfolioData.about.location}`,
+      `Email: ${this.portfolioData.about.email}`
+    ];
+
+    if (this.portfolioData.about.phone) {
+      aboutLines.push(`Phone: ${this.portfolioData.about.phone}`);
+    }
+
+    if (this.portfolioData.about.summary) {
+      aboutLines.push('', `Summary: ${this.portfolioData.about.summary}`);
+    }
+
+    if (this.portfolioData.about.education.length > 0) {
+      aboutLines.push('', 'Education:');
+      this.portfolioData.about.education.forEach((entry) => {
+        aboutLines.push(`- ${entry}`);
+      });
+    }
+
+    if (this.portfolioData.about.links.length > 0) {
+      aboutLines.push('', 'Links:');
+      this.portfolioData.about.links.forEach((link) => {
+        aboutLines.push(`- ${link.label}: ${link.url}`);
+      });
+    }
+
+    if (this.portfolioData.about.bio.length > 0) {
+      aboutLines.push('', 'Bio:');
+      this.portfolioData.about.bio.forEach((paragraph) => {
+        aboutLines.push(`- ${paragraph}`);
+      });
+    }
+
     this.fileSystem = {
       name: 'akhil',
       type: 'directory',
@@ -26,14 +62,7 @@ class CommandProcessor {
         {
           name: 'about.txt',
           type: 'file',
-          content: `Name: ${this.portfolioData.about.name}
-Title: ${this.portfolioData.about.title}
-Location: ${this.portfolioData.about.location}
-Email: ${this.portfolioData.about.email}
-Phone: ${this.portfolioData.about.phone}
-LinkedIn: ${this.portfolioData.about.linkedin}
-GitHub: ${this.portfolioData.about.github}
-Education: ${this.portfolioData.about.education}`
+          content: aboutLines.join('\n')
         },
         {
           name: 'experience',
@@ -42,65 +71,79 @@ Education: ${this.portfolioData.about.education}`
             name: `${exp.company.toLowerCase().replace(/[^a-z0-9]/g, '-')}.md`,
             type: 'file',
             content: `# ${exp.company}
-Position: ${exp.position}
+Role: ${exp.position}
 Duration: ${exp.duration}
-Description: ${exp.description}
+Summary: ${exp.summary || 'N/A'}
+
+Technologies: ${exp.technologies.length > 0 ? exp.technologies.join(', ') : 'N/A'}
 
 Achievements:
-${exp.achievements.map(achievement => `- ${achievement}`).join('\n')}`
+${exp.achievements.length > 0 ? exp.achievements.map((achievement) => `- ${achievement}`).join('\n') : '- N/A'}`
           }))
         },
         {
           name: 'projects',
           type: 'directory',
-          children: this.portfolioData.projects.map(project => ({
-            name: `${project.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}.md`,
-            type: 'file',
-            content: `# ${project.name}
-Description: ${project.description}
-Technologies: ${project.technologies.join(', ')}
-Accuracy/Impact: ${project.accuracy || 'N/A'}`
-          }))
+          children: this.portfolioData.projects.map(project => {
+            const metricLine = project.metric ? `${project.metric.label}: ${project.metric.value}` : 'Metric: N/A';
+            const linkLines = [
+              project.github ? `GitHub: ${project.github}` : '',
+              project.demo ? `Demo: ${project.demo}` : ''
+            ].filter(Boolean);
+
+            return {
+              name: `${project.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}.md`,
+              type: 'file',
+              content: [`# ${project.name}`,
+                `Description: ${project.description}`,
+                `Technologies: ${project.technologies.length > 0 ? project.technologies.join(', ') : 'N/A'}`,
+                metricLine,
+                ...linkLines
+              ].join('\n')
+            };
+          })
         },
         {
           name: 'skills',
           type: 'directory',
           children: [
-            {
-              name: 'languages.txt',
+            ...this.portfolioData.skills.categories.map((category) => ({
+              name: `${category.id || category.label.toLowerCase().replace(/[^a-z0-9]/g, '-')}.txt`,
               type: 'file',
-              content: this.portfolioData.skills.languages.join('\n')
-            },
-            {
-              name: 'technologies.txt',
-              type: 'file',
-              content: this.portfolioData.skills.technologies.join('\n')
-            },
-            {
-              name: 'tools.txt',
-              type: 'file',
-              content: this.portfolioData.skills.tools.join('\n')
-            }
-          ]
+              content: category.skills.join('\n')
+            })),
+            this.portfolioData.skills.coreCompetencies.length > 0
+              ? {
+                  name: 'core-competencies.txt',
+                  type: 'file',
+                  content: this.portfolioData.skills.coreCompetencies.join('\n')
+                }
+              : undefined
+          ].filter(Boolean) as FileSystemItem[]
         },
         {
           name: 'awards',
           type: 'directory',
           children: this.portfolioData.awards.map(award => ({
-            name: `${award.name.toLowerCase().replace(/[^a-z0-9]/g, '-')}.txt`,
+            name: `${award.title.toLowerCase().replace(/[^a-z0-9]/g, '-')}.txt`,
             type: 'file',
-            content: `${award.name}
+            content: `${award.title}
+Level: ${award.level}
 Position: ${award.position}
+Year: ${award.year}
 Description: ${award.description}`
           }))
         },
         {
           name: 'contact.txt',
           type: 'file',
-          content: `Email: ${this.portfolioData.about.email}
-Phone: ${this.portfolioData.about.phone}
-LinkedIn: https://linkedin.com/in/${this.portfolioData.about.linkedin}
-GitHub: https://github.com/${this.portfolioData.about.github}`
+          content: [
+            ...this.portfolioData.contact.methods.map((method) => `${method.label}: ${method.value} (${method.url})`),
+            '',
+            'Location:',
+            ...this.portfolioData.contact.location,
+            this.portfolioData.contact.footer ? `\n${this.portfolioData.contact.footer}` : ''
+          ].filter(Boolean).join('\n')
         }
       ]
     };
@@ -402,38 +445,64 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
   }
 
   private handleWhoami(): TerminalLine[] {
-    return [
-      {
-        type: 'info',
-        content: '👨‍💻 A Akhil - AI/ML Developer & Researcher',
-        timestamp: new Date()
-      },
-      {
+    const lines: TerminalLine[] = [];
+    const headline = `👨‍💻 ${this.portfolioData.about.name} - ${this.portfolioData.about.primaryTitle}`.trim();
+    const summaryLine = this.portfolioData.about.summary ? `🧭 ${this.portfolioData.about.summary}` : null;
+    const primaryEducation = this.portfolioData.about.education[0];
+    const educationLine = primaryEducation ? `🎓 ${primaryEducation}` : null;
+
+    lines.push({
+      type: 'info',
+      content: headline,
+      timestamp: new Date()
+    });
+
+    if (summaryLine) {
+      lines.push({
         type: 'output',
-        content: `🎓 ${this.portfolioData.about.education}`,
+        content: summaryLine,
         timestamp: new Date()
-      },
-      {
+      });
+    }
+
+    if (educationLine) {
+      lines.push({
         type: 'output',
-        content: `📍 ${this.portfolioData.about.location}`,
+        content: educationLine,
         timestamp: new Date()
-      },
-      {
-        type: 'output',
-        content: `🔬 ${this.portfolioData.experience.length} research experiences at DRDO, ISRO, Samsung`,
-        timestamp: new Date()
-      },
-      {
-        type: 'output',
-        content: `🚀 ${this.portfolioData.projects.length} major projects with 79-95% accuracy rates`,
-        timestamp: new Date()
-      },
-      {
-        type: 'output',
-        content: `🏆 ${this.portfolioData.awards.length} hackathon awards including MIT, IEEE, Smart India`,
-        timestamp: new Date()
-      }
-    ];
+      });
+    }
+
+    lines.push({
+      type: 'output',
+      content: `📍 ${this.portfolioData.about.location}`,
+      timestamp: new Date()
+    });
+
+    lines.push({
+      type: 'output',
+      content: `🔬 ${this.portfolioData.experience.length} research experiences across DRDO, ISRO, Samsung`,
+      timestamp: new Date()
+    });
+
+    const notableMetric = this.portfolioData.projects.find((project) => project.metric)?.metric;
+    const projectSummary = notableMetric
+      ? `🚀 ${this.portfolioData.projects.length} major projects (${notableMetric.label}: ${notableMetric.value})`
+      : `🚀 ${this.portfolioData.projects.length} major projects`;
+
+    lines.push({
+      type: 'output',
+      content: projectSummary,
+      timestamp: new Date()
+    });
+
+    lines.push({
+      type: 'output',
+      content: `🏆 ${this.portfolioData.awards.length} awards including national hackathons`,
+      timestamp: new Date()
+    });
+
+    return lines;
   }
 
   private handleAsk(args: string[]): TerminalLine[] {
@@ -447,6 +516,12 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
       }];
     }
     const lowerQuestion = question.toLowerCase();
+    const formatProjectMetric = (project: PortfolioData['projects'][number]) => {
+      if (project.metric) {
+        return `${project.metric.label}: ${project.metric.value}`;
+      }
+      return 'Metric: N/A';
+    };
     
     // Check for name question
     if (lowerQuestion.match(/(?:what|who)(?:'s| is| are)?\s+(?:your|the)?\s*(?:name|called)/i)) {
@@ -458,7 +533,7 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
         },
         {
           type: 'output',
-          content: `My name is ${this.portfolioData.about.name}. I'm a ${this.portfolioData.about.title}.`,
+          content: `My name is ${this.portfolioData.about.name}. I'm a ${this.portfolioData.about.primaryTitle}.`,
           timestamp: new Date()
         }
       ];
@@ -481,7 +556,7 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
       // Search directly in the company names and descriptions
       const matchedExperience = this.portfolioData.experience.filter(exp => {
         const companyLower = exp.company.toLowerCase();
-        const descLower = exp.description.toLowerCase();
+        const descLower = exp.summary.toLowerCase();
         
         // Check if the company name or description contains the keyword
         return companyLower.includes(keywordFromQuestion) || 
@@ -497,7 +572,7 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
           },
           ...matchedExperience.map(exp => ({
             type: 'output' as const,
-            content: `• Position: ${exp.position}\n• Duration: ${exp.duration}\n• Description: ${exp.description}\n\nAchievements:${exp.achievements.map(achievement => `\n- ${achievement}`).join('')}`,
+            content: `• Position: ${exp.position}\n• Duration: ${exp.duration}\n• Summary: ${exp.summary}\n\nAchievements:${exp.achievements.length > 0 ? exp.achievements.map(achievement => `\n- ${achievement}`).join('') : '\n- N/A'}`,
             timestamp: new Date()
           }))
         ];
@@ -520,7 +595,7 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
           },
           ...matchedProjects.map(project => ({
             type: 'output' as const,
-            content: `• ${project.name}: ${project.description}\n  Technologies: ${project.technologies.join(', ')}\n  ${project.accuracy ? `Accuracy/Metrics: ${project.accuracy}` : ''}`,
+            content: `• ${project.name}: ${project.description}\n  Technologies: ${project.technologies.join(', ')}\n  ${formatProjectMetric(project)}`,
             timestamp: new Date()
           }))
         ];
@@ -558,7 +633,7 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
           },
           ...matchedProjects.map(project => ({
             type: 'output' as const,
-            content: `• ${project.name}: ${project.description}\n  Technologies: ${project.technologies.join(', ')}${project.accuracy ? `\n  Accuracy/Metrics: ${project.accuracy}` : ''}`,
+            content: `• ${project.name}: ${project.description}\n  Technologies: ${project.technologies.join(', ')}\n  ${formatProjectMetric(project)}`,
             timestamp: new Date()
           }))
         ];
@@ -574,7 +649,7 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
         },
         ...this.portfolioData.experience.map(exp => ({
           type: 'output' as const,
-          content: `• ${exp.company} (${exp.duration}): ${exp.description}`,
+          content: `• ${exp.company} (${exp.duration}): ${exp.summary}`,
           timestamp: new Date()
         }))
       ];
@@ -589,7 +664,7 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
         },
         ...this.portfolioData.projects.slice(0, 5).map(project => ({
           type: 'output' as const,
-          content: `• ${project.name}: ${project.description} (${project.accuracy})`,
+          content: `• ${project.name}: ${project.description} (${formatProjectMetric(project)})`,
           timestamp: new Date()
         })),
         {
@@ -601,28 +676,37 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
     }
     
     if (lowerQuestion.includes('skill') || lowerQuestion.includes('technology')) {
+      const categorySummaries = this.portfolioData.skills.categories.slice(0, 2).map((category) => {
+        const preview = category.skills.slice(0, 6).join(', ');
+        return `${category.label}: ${preview}${category.skills.length > 6 ? ', ...' : ''}`;
+      });
+
+      const coreSummary = this.portfolioData.skills.coreCompetencies.slice(0, 6).join(', ');
+
       return [
         {
           type: 'info',
           content: '💻 My Technical Skills:',
           timestamp: new Date()
         },
-        {
-          type: 'output',
-          content: `Languages: ${this.portfolioData.skills.languages.slice(0, 6).join(', ')}...`,
+        ...categorySummaries.map((summary) => ({
+          type: 'output' as const,
+          content: summary,
           timestamp: new Date()
-        },
-        {
-          type: 'output',
-          content: `Technologies: ${this.portfolioData.skills.technologies.slice(0, 6).join(', ')}...`,
-          timestamp: new Date()
-        },
+        })),
+        coreSummary
+          ? {
+              type: 'output' as const,
+              content: `Core Competencies: ${coreSummary}${this.portfolioData.skills.coreCompetencies.length > 6 ? ', ...' : ''}`,
+              timestamp: new Date()
+            }
+          : undefined,
         {
           type: 'output',
           content: '\nUse "cd skills && ls" to explore all skills!',
           timestamp: new Date()
         }
-      ];
+      ].filter(Boolean) as TerminalLine[];
     }
     
     if (lowerQuestion.includes('award') || lowerQuestion.includes('achievement')) {
@@ -634,34 +718,36 @@ GitHub: https://github.com/${this.portfolioData.about.github}`
         },
         ...this.portfolioData.awards.map(award => ({
           type: 'output' as const,
-          content: `• ${award.name}: ${award.position}`,
+          content: `• ${award.title} (${award.level}): ${award.position}`,
           timestamp: new Date()
         }))
       ];
     }
     
     if (lowerQuestion.includes('contact') || lowerQuestion.includes('reach')) {
+      const contactLines = this.portfolioData.contact.methods.map((method) =>
+        `${method.label}: ${method.url || method.value}`
+      );
+      const locationLines = this.portfolioData.contact.location.length > 0
+        ? ['Location:', ...this.portfolioData.contact.location]
+        : [];
+
       return [
         {
           type: 'info',
           content: '📧 Contact Information:',
           timestamp: new Date()
         },
-        {
-          type: 'output',
-          content: `Email: ${this.portfolioData.about.email}`,
+        ...contactLines.map((line) => ({
+          type: 'output' as const,
+          content: line,
           timestamp: new Date()
-        },
-        {
-          type: 'output',
-          content: `LinkedIn: https://linkedin.com/in/${this.portfolioData.about.linkedin}`,
+        })),
+        ...locationLines.map((line) => ({
+          type: 'output' as const,
+          content: line,
           timestamp: new Date()
-        },
-        {
-          type: 'output',
-          content: `GitHub: https://github.com/${this.portfolioData.about.github}`,
-          timestamp: new Date()
-        }
+        }))
       ];
     }
     return [
