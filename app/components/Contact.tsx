@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaPaperPlane, FaUser, FaEnvelope, FaComment, FaLinkedin, FaGithub, FaPhone } from 'react-icons/fa';
+import { getPortfolioData } from '@/app/utils/getPortfolioData';
 
 const Contact = () => {
   const [ref, inView] = useInView({
@@ -28,6 +29,23 @@ const Contact = () => {
     }));
   };
 
+  const { contact } = getPortfolioData();
+  const contactForm = contact.form ?? {};
+  const contactMethods = contact.methods ?? [];
+  const contactLocation = contact.location;
+  const contactFooter = contact.footer;
+
+  const iconMap: Record<string, typeof FaPaperPlane> = {
+    FaEnvelope,
+    FaPhone,
+    FaLinkedin,
+    FaGithub,
+    email: FaEnvelope,
+    phone: FaPhone,
+    linkedin: FaLinkedin,
+    github: FaGithub,
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -44,39 +62,8 @@ const Contact = () => {
     });
     
     setIsSubmitting(false);
-    alert('Message sent successfully! I\'ll get back to you soon.');
+    alert(contactForm.successMessage ?? "Message sent successfully! I'll get back to you soon.");
   };
-
-  const contactInfo = [
-    {
-      icon: FaEnvelope,
-      label: 'Email',
-      value: 'akhilarul324@gmail.com',
-      href: 'mailto:akhilarul324@gmail.com',
-      color: 'from-red-400 to-red-600',
-    },
-    {
-      icon: FaPhone,
-      label: 'Phone',
-      value: '[REDACTED]',
-      href: 'tel:[REDACTED]',
-      color: 'from-green-400 to-green-600',
-    },
-    {
-      icon: FaLinkedin,
-      label: 'LinkedIn',
-      value: 'a-akhil-16b396201',
-      href: 'https://linkedin.com/in/a-akhil-16b396201/',
-      color: 'from-blue-400 to-blue-600',
-    },
-    {
-      icon: FaGithub,
-      label: 'GitHub',
-      value: 'A-Akhil',
-      href: 'https://github.com/A-Akhil',
-      color: 'from-gray-400 to-gray-600',
-    },
-  ];
 
   return (
     <section id="contact" className="py-20 px-4 relative bg-ai-gray/10">
@@ -89,11 +76,11 @@ const Contact = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-            Get In Touch
+            {contact.title}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-ai-cyan to-ai-blue mx-auto mb-8"></div>
           <p className="text-xl text-ai-light/70 max-w-3xl mx-auto">
-            Ready to innovate together? Let's discuss your next AI/ML project or research collaboration
+            {contact.description}
           </p>
         </motion.div>
 
@@ -116,7 +103,7 @@ const Contact = () => {
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
-                    placeholder="Your Name"
+                    placeholder={contactForm.namePlaceholder ?? 'Your Name'}
                     required
                     className="w-full pl-12 pr-4 py-3 bg-ai-dark/50 border border-ai-blue/30 rounded-lg text-ai-light placeholder-ai-light/50 focus:border-ai-cyan focus:outline-none transition-colors"
                   />
@@ -129,7 +116,7 @@ const Contact = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleInputChange}
-                    placeholder="Your Email"
+                    placeholder={contactForm.emailPlaceholder ?? 'Your Email'}
                     required
                     className="w-full pl-12 pr-4 py-3 bg-ai-dark/50 border border-ai-blue/30 rounded-lg text-ai-light placeholder-ai-light/50 focus:border-ai-cyan focus:outline-none transition-colors"
                   />
@@ -154,7 +141,7 @@ const Contact = () => {
                   name="message"
                   value={formData.message}
                   onChange={handleInputChange}
-                  placeholder="Your Message"
+                  placeholder={contactForm.messagePlaceholder ?? 'Your Message'}
                   rows={6}
                   required
                   className="w-full pl-12 pr-4 py-3 bg-ai-dark/50 border border-ai-blue/30 rounded-lg text-ai-light placeholder-ai-light/50 focus:border-ai-cyan focus:outline-none transition-colors resize-none"
@@ -176,7 +163,7 @@ const Contact = () => {
                 ) : (
                   <>
                     <FaPaperPlane />
-                    Send Message
+                    {contactForm.submitLabel ?? 'Send Message'}
                   </>
                 )}
               </motion.button>
@@ -199,27 +186,32 @@ const Contact = () => {
             </div>
 
             <div className="space-y-6">
-              {contactInfo.map((info, index) => (
+              {contactMethods.map((info, index) => {
+                const gradient = info.gradient ?? 'from-ai-cyan to-ai-blue';
+                const Icon = iconMap[info.icon ?? info.type ?? ''] ?? FaPaperPlane;
+                const href = info.href ?? '#';
+                return (
                 <motion.a
-                  key={info.label}
-                  href={info.href}
-                  target={info.href.startsWith('http') ? '_blank' : undefined}
-                  rel={info.href.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  key={`${info.label ?? info.type}-${index}`}
+                  href={href}
+                  target={href.startsWith('http') ? '_blank' : undefined}
+                  rel={href.startsWith('http') ? 'noopener noreferrer' : undefined}
                   initial={{ opacity: 0, y: 20 }}
                   animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                   transition={{ duration: 0.6, delay: 0.6 + index * 0.1 }}
                   whileHover={{ scale: 1.02, x: 10 }}
                   className="flex items-center gap-4 p-4 bg-ai-gray/20 rounded-xl border border-ai-blue/20 hover:border-ai-cyan/50 transition-all duration-300 group"
                 >
-                  <div className={`p-3 rounded-full bg-gradient-to-r ${info.color} text-white group-hover:scale-110 transition-transform`}>
-                    <info.icon size={20} />
+                  <div className={`p-3 rounded-full bg-gradient-to-r ${gradient} text-white group-hover:scale-110 transition-transform`}>
+                    <Icon size={20} />
                   </div>
                   <div>
-                    <div className="text-ai-light/60 text-sm font-medium">{info.label}</div>
+                    <div className="text-ai-light/60 text-sm font-medium">{info.label ?? info.type}</div>
                     <div className="text-ai-light font-semibold">{info.value}</div>
                   </div>
                 </motion.a>
-              ))}
+                );
+              })}
             </div>
 
             {/* Location */}
@@ -229,13 +221,15 @@ const Contact = () => {
               transition={{ duration: 0.6, delay: 1 }}
               className="mt-8 p-6 bg-ai-gray/20 rounded-xl border border-ai-blue/20"
             >
-              <h4 className="text-lg font-semibold text-ai-cyan mb-2">Location</h4>
-              <p className="text-ai-light/70">
-                Kollemcode, Kanyakumari, Tamil Nadu, India
-              </p>
-              <p className="text-ai-light/60 text-sm mt-2">
-                Currently studying at SRM Institute of Science and Technology, Chennai
-              </p>
+              <h4 className="text-lg font-semibold text-ai-cyan mb-2">{contactLocation?.headline ?? 'Location'}</h4>
+              {contactLocation?.body?.map((line, lineIndex) => {
+                const lineClasses = lineIndex === 0 ? 'text-ai-light/70' : 'text-ai-light/60 text-sm mt-2';
+                return (
+                  <p key={`${line}-${lineIndex}`} className={lineClasses}>
+                    {line}
+                  </p>
+                );
+              })}
             </motion.div>
           </motion.div>
         </div>
@@ -248,7 +242,7 @@ const Contact = () => {
           className="text-center mt-16 pt-8 border-t border-ai-blue/20"
         >
           <p className="text-ai-light/60">
-            © 2025 A Akhil. Designed with ❤️ by A Akhil. All rights reserved.
+            {contactFooter}
           </p>
         </motion.div>
       </div>

@@ -2,11 +2,11 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaCalendarAlt, FaMapMarkerAlt } from 'react-icons/fa';
-import portfolioData from '../data/portfolioData';
+import { FaMapMarkerAlt } from 'react-icons/fa';
+import { getPortfolioData } from '@/app/utils/getPortfolioData';
 
 const Experience = () => {
-  const { experiences } = portfolioData;
+  const { experience } = getPortfolioData();
   
   const [ref, inView] = useInView({
     triggerOnce: true,
@@ -24,11 +24,11 @@ const Experience = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-            Experience
+            {experience.title}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-ai-cyan to-ai-blue mx-auto mb-8"></div>
           <p className="text-xl text-ai-light/70 max-w-3xl mx-auto">
-            My journey through prestigious research organizations, contributing to cutting-edge AI/ML solutions
+            {experience.description}
           </p>
         </motion.div>
 
@@ -37,9 +37,9 @@ const Experience = () => {
           <div className="absolute left-8 md:left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-ai-cyan via-ai-blue to-ai-purple transform md:-translate-x-px"></div>
 
           <div className="space-y-12">
-            {experiences.map((exp, index) => (
+            {experience.items.map((exp, index) => (
               <motion.div
-                key={index}
+                key={`${exp.company}-${exp.period}`}
                 initial={{ opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                 animate={inView ? { opacity: 1, x: 0 } : { opacity: 0, x: index % 2 === 0 ? -50 : 50 }}
                 transition={{ duration: 0.8, delay: index * 0.2 }}
@@ -59,19 +59,23 @@ const Experience = () => {
                     className="bg-ai-gray/40 backdrop-blur-sm border border-ai-blue/30 rounded-2xl p-6 hover:border-ai-cyan/50 transition-all duration-300"
                   >
                     <div className="flex items-center gap-3 mb-4">
-                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${exp.color}`}></div>
+                      <div className={`w-3 h-3 rounded-full bg-gradient-to-r ${exp.accentGradient ?? 'from-ai-cyan to-ai-blue'}`}></div>
                       <span className="text-sm text-ai-cyan font-medium">{exp.period}</span>
                     </div>
 
                     <h3 className="text-xl font-bold text-ai-light mb-2">{exp.title}</h3>
                     <h4 className="text-lg font-semibold text-ai-cyan mb-3">{exp.company}</h4>
                     
-                    <div className="flex items-center text-ai-light/60 text-sm mb-4">
-                      <FaMapMarkerAlt className="mr-2" />
-                      {exp.location}
-                    </div>
+                    {exp.location ? (
+                      <div className="flex items-center text-ai-light/60 text-sm mb-4">
+                        <FaMapMarkerAlt className="mr-2" />
+                        {exp.location}
+                      </div>
+                    ) : null}
 
-                    <p className="text-ai-light/80 leading-relaxed mb-6">{exp.description}</p>
+                    {exp.summary ? (
+                      <p className="text-ai-light/80 leading-relaxed mb-6">{exp.summary}</p>
+                    ) : null}
 
                     <div className="flex flex-wrap gap-2">
                       {exp.technologies.map((tech) => (
@@ -83,6 +87,13 @@ const Experience = () => {
                         </span>
                       ))}
                     </div>
+                    {exp.achievements.length ? (
+                      <ul className="mt-4 list-disc list-inside space-y-1 text-ai-light/70 text-sm">
+                        {exp.achievements.map((achievement) => (
+                          <li key={achievement}>{achievement}</li>
+                        ))}
+                      </ul>
+                    ) : null}
                   </motion.div>
                 </div>
               </motion.div>

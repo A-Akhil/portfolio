@@ -2,11 +2,13 @@
 
 import { motion } from 'framer-motion';
 import { TypeAnimation } from 'react-type-animation';
-import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaDownload } from 'react-icons/fa';
-import portfolioData from '../data/portfolioData';
+import type { IconType } from 'react-icons';
+import { FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaDownload, FaLink } from 'react-icons/fa';
+import { getPortfolioData } from '@/app/utils/getPortfolioData';
+import type { CtaButton } from '@/app/types/portfolioData';
 
 const Hero = () => {
-  const { personalInfo } = portfolioData;
+  const { hero, profile } = getPortfolioData();
   
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -30,43 +32,102 @@ const Hero = () => {
     },
   };
 
-  const floatingAnimation = {
-    y: [-10, 10, -10],
-    transition: {
-      duration: 6,
-      repeat: Infinity,
-      ease: "easeInOut",
-    },
+  const iconMap: Record<string, IconType> = {
+    FaGithub,
+    FaLinkedin,
+    FaEnvelope,
+    FaPhone,
+  };
+
+  const floatingIcons = hero.floatingIcons.length
+    ? hero.floatingIcons
+    : [
+        { emoji: '🧠', positionClass: 'absolute top-20 left-10 text-ai-cyan opacity-20', animationDelay: 0 },
+        { emoji: '⚡', positionClass: 'absolute top-40 right-20 text-ai-green opacity-20', animationDelay: 1 },
+        { emoji: '🤖', positionClass: 'absolute bottom-40 left-20 text-ai-purple opacity-20', animationDelay: 2 },
+        { emoji: '💡', positionClass: 'absolute bottom-20 right-10 text-ai-blue opacity-20', animationDelay: 3 },
+      ];
+
+  const floatingSizeClasses = ['text-6xl', 'text-5xl', 'text-7xl', 'text-6xl'];
+
+  const handleScroll = (target: string) => {
+    const selector = target.startsWith('#') ? target.slice(1) : target;
+    const element = document.getElementById(selector);
+    if (element) {
+      element.scrollIntoView({ behavior: 'smooth' });
+    }
+  };
+
+  const renderCtaContent = (cta: CtaButton) => (
+    <>
+      {cta.action === 'download' && <FaDownload />}
+      {cta.label}
+    </>
+  );
+
+  const renderCta = (cta: CtaButton, variant: 'primary' | 'secondary') => {
+    const baseMotionProps = {
+      whileHover: { scale: 1.05, ...(variant === 'primary' ? { boxShadow: '0 0 30px #00CCFF' } : {}) },
+      whileTap: { scale: 0.95 },
+    } as const;
+
+    const className =
+      variant === 'primary'
+        ? 'px-8 py-4 bg-gradient-to-r from-ai-cyan to-ai-blue text-white font-semibold rounded-full hover-glow transition-all duration-300 flex items-center gap-3'
+        : 'px-8 py-4 border-2 border-ai-cyan text-ai-cyan font-semibold rounded-full hover:bg-ai-cyan hover:text-ai-dark transition-all duration-300';
+
+    if (cta.action === 'scroll') {
+      return (
+        <motion.button
+          key={`${cta.label}-${cta.target}`}
+          {...baseMotionProps}
+          className={className}
+          onClick={() => handleScroll(cta.target)}
+        >
+          {renderCtaContent(cta)}
+        </motion.button>
+      );
+    }
+
+    const isExternal = cta.action === 'external';
+    const href = cta.target || '#';
+    const target = cta.newTab || isExternal ? '_blank' : undefined;
+    const rel = target ? 'noopener noreferrer' : undefined;
+
+    return (
+      <motion.a
+        key={`${cta.label}-${cta.target}`}
+        {...baseMotionProps}
+        href={href}
+        download={cta.action === 'download' ? cta.downloadName : undefined}
+        target={target}
+        rel={rel}
+        className={`${className}${variant === 'primary' ? '' : ' flex items-center gap-3 justify-center'}`}
+      >
+        {renderCtaContent(cta)}
+      </motion.a>
+    );
   };
 
   return (
     <section id="hero" className="min-h-screen flex items-center justify-center relative overflow-hidden">
       {/* Floating AI/ML Icons */}
       <div className="absolute inset-0 pointer-events-none">
-        <motion.div
-          animate={floatingAnimation}
-          className="absolute top-20 left-10 text-ai-cyan opacity-20"
-        >
-          <div className="text-6xl">🧠</div>
-        </motion.div>
-        <motion.div
-          animate={{ ...floatingAnimation, transition: { ...floatingAnimation.transition, delay: 1 } }}
-          className="absolute top-40 right-20 text-ai-green opacity-20"
-        >
-          <div className="text-5xl">⚡</div>
-        </motion.div>
-        <motion.div
-          animate={{ ...floatingAnimation, transition: { ...floatingAnimation.transition, delay: 2 } }}
-          className="absolute bottom-40 left-20 text-ai-purple opacity-20"
-        >
-          <div className="text-7xl">🤖</div>
-        </motion.div>
-        <motion.div
-          animate={{ ...floatingAnimation, transition: { ...floatingAnimation.transition, delay: 3 } }}
-          className="absolute bottom-20 right-10 text-ai-blue opacity-20"
-        >
-          <div className="text-6xl">💡</div>
-        </motion.div>
+        {floatingIcons.map((icon, index) => (
+          <motion.div
+            key={`${icon.emoji}-${index}`}
+            animate={{ y: [-10, 10, -10] }}
+            transition={{
+              duration: 6,
+              repeat: Infinity,
+              ease: 'easeInOut',
+              delay: icon.animationDelay ?? index,
+            }}
+            className={icon.positionClass}
+          >
+            <div className={floatingSizeClasses[index % floatingSizeClasses.length]}>{icon.emoji}</div>
+          </motion.div>
+        ))}
       </div>
 
       <motion.div
@@ -79,7 +140,7 @@ const Hero = () => {
           variants={itemVariants}
           className="text-5xl md:text-7xl font-bold mb-6"
         >
-          <span className="gradient-text">{personalInfo.name}</span>
+          <span className="gradient-text">{profile.name}</span>
         </motion.h1>
 
         <motion.div
@@ -88,7 +149,7 @@ const Hero = () => {
         >
           <TypeAnimation
             sequence={
-              personalInfo.titles.flatMap(title => [title, 2000])
+              profile.titles.flatMap((title) => [title, 2000])
             }
             wrapper="span"
             speed={50}
@@ -101,7 +162,7 @@ const Hero = () => {
           variants={itemVariants}
           className="text-lg md:text-xl text-ai-light/80 mb-12 max-w-3xl mx-auto leading-relaxed"
         >
-          I am a machine learning engineer who builds things that matter.
+          {hero.subtitle || profile.summary}
         </motion.p>
 
         {/* Action Buttons */}
@@ -109,27 +170,8 @@ const Hero = () => {
           variants={itemVariants}
           className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-12"
         >
-          <motion.a
-            href={personalInfo.resumeUrl && personalInfo.resumeUrl !== '/resume.pdf' ? personalInfo.resumeUrl : "/Akhil_resume.pdf"}
-            download="A_Akhil_Resume.pdf"
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ scale: 1.05, boxShadow: "0 0 30px #00CCFF" }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 bg-gradient-to-r from-ai-cyan to-ai-blue text-white font-semibold rounded-full hover-glow transition-all duration-300 flex items-center gap-3"
-          >
-            <FaDownload />
-            Download Resume
-          </motion.a>
-
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="px-8 py-4 border-2 border-ai-cyan text-ai-cyan font-semibold rounded-full hover:bg-ai-cyan hover:text-ai-dark transition-all duration-300"
-            onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
-          >
-            Get In Touch
-          </motion.button>
+          {renderCta(hero.ctaPrimary, 'primary')}
+          {hero.ctaSecondary ? renderCta(hero.ctaSecondary, 'secondary') : null}
         </motion.div>
 
         {/* Social Links */}
@@ -137,27 +179,26 @@ const Hero = () => {
           variants={itemVariants}
           className="flex justify-center space-x-8"
         >
-          {[
-            { icon: FaGithub, href: 'https://github.com/A-Akhil', label: 'GitHub' },
-            { icon: FaLinkedin, href: 'https://linkedin.com/in/a-akhil-16b396201/', label: 'LinkedIn' },
-            { icon: FaEnvelope, href: 'mailto:akhilarul324@gmail.com', label: 'Email' },
-            { icon: FaPhone, href: 'tel:[REDACTED]', label: 'Phone' },
-          ].map((social, index) => (
-            <motion.a
-              key={social.label}
-              href={social.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-3xl text-ai-light/60 hover:text-ai-cyan transition-colors duration-300"
-              whileHover={{ scale: 1.2, y: -5 }}
-              whileTap={{ scale: 0.9 }}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 1 + index * 0.1 }}
-            >
-              <social.icon />
-            </motion.a>
-          ))}
+          {hero.socialLinks.map((link, index) => {
+            const IconComponent = iconMap[link.icon] ?? FaLink;
+            return (
+              <motion.a
+                key={link.id}
+                href={link.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-3xl text-ai-light/60 hover:text-ai-cyan transition-colors duration-300"
+                whileHover={{ scale: 1.2, y: -5 }}
+                whileTap={{ scale: 0.9 }}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1 + index * 0.1 }}
+                aria-label={link.label}
+              >
+                <IconComponent />
+              </motion.a>
+            );
+          })}
         </motion.div>
 
         {/* Scroll Indicator */}
