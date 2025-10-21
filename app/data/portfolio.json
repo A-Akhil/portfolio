@@ -1,0 +1,635 @@
+{
+  "profile": {
+    "name": "A Akhil",
+    "titles": [
+      "AI/ML Developer",
+      "Research Scientist",
+      "Deep Learning Engineer",
+      "Innovation Catalyst"
+    ],
+    "summary": "I am a machine learning engineer who builds things that matter.",
+    "location": "Kollemcode, Kanyakumari, Tamil Nadu, India",
+    "email": "akhilarul324@gmail.com",
+    "phone": "[REDACTED]",
+    "github": "https://github.com/A-Akhil",
+    "linkedin": "https://linkedin.com/in/a-akhil-16b396201/",
+    "avatar": {
+      "src": "/og-image.png",
+      "alt": "A Akhil"
+    },
+    "resume": {
+      "url": "/Akhil_resume.pdf",
+      "downloadName": "A_Akhil_Resume.pdf"
+    },
+    "bio": [
+      "I'm a passionate AI/ML developer and researcher currently pursuing B.Tech in Computer Science with specialization in AI-ML at SRM Institute of Science and Technology. My journey in artificial intelligence has been marked by groundbreaking research experiences at India's premier organizations.",
+      "From developing AI models for defense applications at DRDO to creating recommendation engines for space technology at ISRO, my work spans across cutting-edge domains of artificial intelligence and machine learning.",
+      "My expertise spans machine learning, deep learning, computer vision, natural language processing, and full-stack development. I believe in the power of AI to solve real-world problems and create meaningful impact."
+    ],
+    "education": [
+      {
+        "institution": "SRM Institute of Science and Technology",
+        "degree": "B.Tech",
+        "field": "Computer Science with AI-ML Specialization",
+        "period": "2022 - Present",
+        "location": "Chennai, Tamil Nadu",
+        "achievements": [
+          "CGPA: 9.5/10",
+          "Member of AI Research Club",
+          "Published 2 research papers in international journals"
+        ]
+      }
+    ]
+  },
+  "navigation": {
+    "primary": [
+      { "label": "Home", "target": "#hero" },
+      { "label": "About", "target": "#about" },
+      { "label": "Experience", "target": "#experience" },
+      { "label": "Projects", "target": "#projects" },
+      { "label": "Skills", "target": "#skills" },
+      { "label": "Awards", "target": "#awards" },
+      { "label": "Contact", "target": "#contact" }
+    ],
+    "terminal": {
+      "label": "Terminal",
+      "href": "/terminal",
+      "tooltip": "Interactive Terminal"
+    }
+  },
+  "hero": {
+    "title": "Hero",
+    "subtitle": "I am a machine learning engineer who builds things that matter.",
+    "ctaPrimary": {
+      "label": "Download Resume",
+      "action": "download",
+      "target": "/Akhil_resume.pdf",
+      "downloadName": "A_Akhil_Resume.pdf",
+      "newTab": true
+    },
+    "ctaSecondary": {
+      "label": "Get In Touch",
+      "action": "scroll",
+      "target": "#contact"
+    },
+    "socialLinks": [
+      {
+        "id": "github",
+        "label": "GitHub",
+        "url": "https://github.com/A-Akhil",
+        "icon": "FaGithub"
+      },
+      {
+        "id": "linkedin",
+        "label": "LinkedIn",
+        "url": "https://linkedin.com/in/a-akhil-16b396201/",
+        "icon": "FaLinkedin"
+      },
+      {
+        "id": "email",
+        "label": "Email",
+        "url": "mailto:akhilarul324@gmail.com",
+        "icon": "FaEnvelope"
+      },
+      {
+        "id": "phone",
+        "label": "Phone",
+        "url": "tel:[REDACTED]",
+        "icon": "FaPhone"
+      }
+    ],
+    "floatingIcons": [
+      {
+        "emoji": "🧠",
+        "positionClass": "absolute top-20 left-10 text-ai-cyan opacity-20",
+        "animationDelay": 0
+      },
+      {
+        "emoji": "⚡",
+        "positionClass": "absolute top-40 right-20 text-ai-green opacity-20",
+        "animationDelay": 1
+      },
+      {
+        "emoji": "🤖",
+        "positionClass": "absolute bottom-40 left-20 text-ai-purple opacity-20",
+        "animationDelay": 2
+      },
+      {
+        "emoji": "💡",
+        "positionClass": "absolute bottom-20 right-10 text-ai-blue opacity-20",
+        "animationDelay": 3
+      }
+    ]
+  },
+  "about": {
+    "title": "About Me",
+    "body": [
+      "I'm a passionate AI/ML developer and researcher currently pursuing B.Tech in Computer Science with specialization in AI-ML at SRM Institute of Science and Technology. My journey in artificial intelligence has been marked by groundbreaking research experiences at India's premier organizations.",
+      "From developing AI models for defense applications at DRDO to creating recommendation engines for space technology at ISRO, my work spans across cutting-edge domains of artificial intelligence and machine learning.",
+      "My expertise spans machine learning, deep learning, computer vision, natural language processing, and full-stack development. I believe in the power of AI to solve real-world problems and create meaningful impact."
+    ],
+    "highlightSkills": [
+      "Python",
+      "Machine Learning",
+      "Deep Learning",
+      "Computer Vision",
+      "NLP",
+      "React",
+      "Node.js"
+    ],
+    "stats": [
+      {
+        "label": "Research Roles",
+        "value": "4+",
+        "icon": "FaBriefcase"
+      },
+      {
+        "label": "AI/ML Projects",
+        "value": "8+",
+        "icon": "FaProjectDiagram"
+      }
+    ],
+    "image": {
+      "src": "/og-image.png",
+      "alt": "A Akhil portrait"
+    }
+  },
+  "experience": {
+    "title": "Experience",
+    "description": "My journey through prestigious research organizations, contributing to cutting-edge AI/ML solutions",
+    "items": [
+      {
+        "title": "Research Intern",
+        "company": "Defence Research & Development Organisation (CAIR-DRDO)",
+        "location": "India",
+        "period": "December 2024 – Present",
+        "summary": "Developing an advanced web scraper leveraging LLM capabilities to efficiently extract and analyze data from websites.",
+        "technologies": [
+          "Python",
+          "LLM",
+          "Web Scraping",
+          "Data Analysis"
+        ],
+        "achievements": [
+          "Developed intelligent web scraping system",
+          "Integrated LLM for data processing"
+        ],
+        "accentGradient": "from-red-500 to-red-600"
+      },
+      {
+        "title": "Intern",
+        "company": "Indian Space Research Organisation (ISSDC-ISRO)",
+        "location": "India",
+        "period": "December 2024 – January 2025",
+        "summary": "Developed a recommendation engine for the PRADAN website by ISSDC, enhancing user experience and data accessibility for ISRO.",
+        "technologies": [
+          "Python",
+          "Machine Learning",
+          "Recommendation Systems",
+          "Web Development"
+        ],
+        "achievements": [
+          "Built recommendation system",
+          "Enhanced user experience for PRADAN platform"
+        ],
+        "accentGradient": "from-blue-500 to-blue-600"
+      },
+      {
+        "title": "Research Intern",
+        "company": "Defence Research & Development Organisation (CVRDE-DRDO)",
+        "location": "India",
+        "period": "July 2024 – August 2024",
+        "summary": "Developed an AI model achieving 92% accuracy in predicting the remaining lifespan of BLDC motors and identifying faults in real-time during operation for Armoured Fighting Vehicles (AFVs). Reduced diagnostic time by 80%.",
+        "technologies": [
+          "AI/ML",
+          "Predictive Analytics",
+          "Real-time Systems",
+          "Python"
+        ],
+        "achievements": [
+          "Achieved 92% accuracy in motor lifespan prediction",
+          "Developed AI models for industrial applications"
+        ],
+        "accentGradient": "from-green-500 to-green-600"
+      },
+      {
+        "title": "Intern",
+        "company": "Samsung R&D Institute",
+        "location": "India",
+        "period": "January 2024 – July 2024",
+        "summary": "Developed a Generative AI Large Language Model integrated with a web scraper that analyzed over 10,000 products and reviews, achieving 85% accuracy in sentiment analysis and data classification. Reduced processing time by 60%.",
+        "technologies": [
+          "Generative AI",
+          "LLM",
+          "NLP",
+          "Sentiment Analysis",
+          "Web Scraping"
+        ],
+        "achievements": [
+          "Built generative AI system",
+          "Achieved 85% accuracy in sentiment analysis"
+        ],
+        "accentGradient": "from-purple-500 to-purple-600"
+      }
+    ]
+  },
+  "projects": {
+    "title": "Featured Projects",
+    "description": "Innovative AI/ML solutions solving real-world problems across various domains",
+    "cta": {
+      "label": "View All Projects on GitHub",
+      "action": "external",
+      "target": "https://github.com/A-Akhil",
+      "newTab": true
+    },
+    "items": [
+      {
+        "title": "Machine Learning for Diabetic Prediction",
+        "description": "Conducted a comparative study on Ridge, Lasso, and ElasticNet regression models, achieving a prediction accuracy of up to 88%. Implemented and optimized models in Java, processing datasets with over 10,000 patient records.",
+        "technologies": [
+          "Java",
+          "Machine Learning",
+          "Data Analysis",
+          "Statistical Modeling"
+        ],
+        "githubUrl": "#",
+        "demoUrl": "#",
+        "gradient": "from-blue-500 to-purple-600",
+        "icon": "🏥",
+        "metric": {
+          "label": "Accuracy",
+          "value": "88%"
+        },
+        "featured": true
+      },
+      {
+        "title": "Advanced Traffic Sign Detection",
+        "description": "A research paper introducing an innovative methodology for small object detection with a focus on traffic signs, achieving a reduction in detection errors by 79%. Conducted 100+ experiments using datasets containing over 50,000 images.",
+        "technologies": [
+          "Python",
+          "Computer Vision",
+          "Deep Learning",
+          "Image Processing"
+        ],
+        "githubUrl": "#",
+        "demoUrl": "#",
+        "gradient": "from-green-500 to-teal-600",
+        "icon": "🚦",
+        "metric": {
+          "label": "Error Reduction",
+          "value": "79%"
+        },
+        "featured": true
+      },
+      {
+        "title": "Real-time Parking Detection",
+        "description": "Developed a real-time parking detection system to monitor 200+ parking slots using computer vision technology. Utilized Python and OpenCV to process live video feeds, detecting vacant spaces with 94% accuracy.",
+        "technologies": [
+          "Python",
+          "OpenCV",
+          "Computer Vision",
+          "Real-time Processing"
+        ],
+        "githubUrl": "https://github.com/A-Akhil/Real-time-parking-detection-using-machine-learning",
+        "demoUrl": "#",
+        "gradient": "from-cyan-500 to-blue-600",
+        "icon": "🚗",
+        "metric": {
+          "label": "Accuracy",
+          "value": "94%"
+        },
+        "featured": true
+      },
+      {
+        "title": "Mental Health Assessment System",
+        "description": "Developed a Flask web application to assess mental health for 1,000+ students, analyzing responses to pre-defined questions. Integrated an LLM via Ollama AI to generate scores with 95% accuracy.",
+        "technologies": [
+          "Flask",
+          "Python",
+          "LLM",
+          "Ollama AI",
+          "Web Development"
+        ],
+        "githubUrl": "#",
+        "demoUrl": "#",
+        "gradient": "from-pink-500 to-purple-600",
+        "icon": "🧠",
+        "metric": {
+          "label": "Accuracy",
+          "value": "95%"
+        },
+        "featured": true
+      },
+      {
+        "title": "Cloud and Fog Removal using GAN",
+        "description": "Enhanced satellite image clarity by 84% by optimizing ISRO's models for cloud and fog removal. Designed and implemented a GAN-based system leveraging SPANet architecture to process over 10,000 satellite images efficiently.",
+        "technologies": [
+          "PyTorch",
+          "GAN",
+          "SPANet",
+          "Satellite Imagery",
+          "Deep Learning"
+        ],
+        "githubUrl": "#",
+        "demoUrl": "#",
+        "gradient": "from-indigo-500 to-purple-600",
+        "icon": "🛰️",
+        "metric": {
+          "label": "Clarity Improvement",
+          "value": "84%"
+        },
+        "featured": true
+      },
+      {
+        "title": "Real Time Crime Detection",
+        "description": "Designed and implemented a Crime Detection system that analyzed live CCTV footage from 50+ cameras to identify suspicious activities. Achieved real-time classification of criminal activities with 90% accuracy.",
+        "technologies": [
+          "Python",
+          "Machine Learning",
+          "Computer Vision",
+          "Django",
+          "Web3"
+        ],
+        "githubUrl": "https://github.com/A-Akhil/Crime-Detection-using-Machine-Learning",
+        "demoUrl": "#",
+        "gradient": "from-red-500 to-orange-600",
+        "icon": "📹",
+        "metric": {
+          "label": "Accuracy",
+          "value": "90%"
+        },
+        "featured": true
+      },
+      {
+        "title": "AI-Generated Text Detection System",
+        "description": "Built an AI-Generated Text Detection System with 92% accuracy in distinguishing AI-generated from human-written text. Processed 50,000+ text samples to train and validate models for content moderation.",
+        "technologies": [
+          "Python",
+          "Machine Learning",
+          "NLP",
+          "Text Analysis"
+        ],
+        "githubUrl": "https://github.com/A-Akhil/ai-generated-text-detector",
+        "demoUrl": "#",
+        "gradient": "from-yellow-500 to-orange-600",
+        "icon": "📝",
+        "metric": {
+          "label": "Accuracy",
+          "value": "92%"
+        },
+        "featured": true
+      },
+      {
+        "title": "Chat Application",
+        "description": "Developed a cross-platform chat application enabling real-time communication for over 500 users. Integrated Firebase for real-time database synchronization, ensuring 99.9% uptime and instant message delivery.",
+        "technologies": [
+          "Java",
+          "Firebase",
+          "Android",
+          "Real-time Database"
+        ],
+        "githubUrl": "#",
+        "demoUrl": "#",
+        "gradient": "from-teal-500 to-cyan-600",
+        "icon": "💬",
+        "metric": {
+          "label": "Uptime",
+          "value": "99.9%"
+        },
+        "featured": true
+      }
+    ]
+  },
+  "skills": {
+    "title": "Technical Skills",
+    "description": "Comprehensive expertise across the full spectrum of AI/ML and software development",
+    "categories": [
+      {
+        "id": "languages",
+        "label": "Languages",
+        "skills": [
+          { "name": "Python", "level": 95, "icon": "🐍" },
+          { "name": "JavaScript", "level": 88, "icon": "⚡" },
+          { "name": "Java", "level": 85, "icon": "☕" },
+          { "name": "C++", "level": 80, "icon": "⚙️" },
+          { "name": "SQL", "level": 85, "icon": "🗃️" }
+        ]
+      },
+      {
+        "id": "ai-ml",
+        "label": "AI/ML Technologies",
+        "skills": [
+          { "name": "Machine Learning", "level": 95, "icon": "🤖" },
+          { "name": "Deep Learning", "level": 90, "icon": "🧠" },
+          { "name": "Computer Vision", "level": 88, "icon": "👁️" },
+          { "name": "NLP", "level": 85, "icon": "💬" },
+          { "name": "TensorFlow/PyTorch", "level": 90, "icon": "🔧" }
+        ]
+      },
+      {
+        "id": "web-tech",
+        "label": "Web Technologies",
+        "skills": [
+          { "name": "React/Next.js", "level": 85, "icon": "⚛️" },
+          { "name": "Node.js", "level": 80, "icon": "🟢" },
+          { "name": "Express.js", "level": 78, "icon": "🚀" },
+          { "name": "MongoDB", "level": 75, "icon": "🍃" },
+          { "name": "PostgreSQL", "level": 80, "icon": "🐘" }
+        ]
+      },
+      {
+        "id": "tools-platforms",
+        "label": "Tools & Platforms",
+        "skills": [
+          { "name": "Docker", "level": 75, "icon": "🐳" },
+          { "name": "Kubernetes", "level": 70, "icon": "☸️" },
+          { "name": "AWS", "level": 78, "icon": "☁️" },
+          { "name": "Git/GitHub", "level": 90, "icon": "📱" },
+          { "name": "Linux", "level": 85, "icon": "🐧" }
+        ]
+      }
+    ],
+    "coreCompetencies": [
+      "Artificial Intelligence",
+      "Machine Learning",
+      "Deep Learning",
+      "Computer Vision",
+      "Natural Language Processing",
+      "Data Science",
+      "Research & Development",
+      "Full-Stack Development",
+      "Cloud Computing",
+      "DevOps"
+    ]
+  },
+  "awards": {
+    "title": "Awards & Recognition",
+    "description": "Recognition for excellence in AI/ML innovation and competitive programming",
+    "items": [
+      {
+        "title": "MIT Anna University Hackathon",
+        "level": "National Level",
+        "position": "1st Prize",
+        "description": "Won First Prize at the national-level MIT Anna University Hackathon, competing against top teams from across the college.",
+        "year": "2025",
+        "icon": "FaTrophy",
+        "gradient": "from-yellow-400 to-yellow-600"
+      },
+      {
+        "title": "IEEE GRSS Hackathon for Data Driven AI in Remote Sensing",
+        "level": "College Level",
+        "position": "1st Prize",
+        "description": "Won First Prize at the college-level IEEE GRSS Hackathon for Data-Driven AI in Remote Sensing, supported by NASA.",
+        "year": "2025",
+        "icon": "FaTrophy",
+        "gradient": "from-blue-400 to-blue-600"
+      },
+      {
+        "title": "Smart Campus Hackathon",
+        "level": "College Level",
+        "position": "1st Place",
+        "description": "Secured First Place in Smart Campus Hackathon organized by SRM Institute of Science and Technology, competing against 100+ teams.",
+        "year": "2023",
+        "icon": "FaMedal",
+        "gradient": "from-green-400 to-green-600"
+      },
+      {
+        "title": "Smart India Hackathon",
+        "level": "National Level",
+        "position": "Semi-Finalist",
+        "description": "Advanced to the semi-final round in Smart India Hackathon, out of 2,000+ teams nationwide.",
+        "year": "2024",
+        "icon": "FaAward",
+        "gradient": "from-purple-400 to-purple-600"
+      },
+      {
+        "title": "Dark Pattern Buster Hackathon",
+        "level": "National Level",
+        "position": "Finalist",
+        "description": "Selected for the final round in Dark Pattern Buster Hackathon, among 5000+ participants.",
+        "year": "2023",
+        "icon": "FaStar",
+        "gradient": "from-red-400 to-red-600"
+      }
+    ],
+    "stats": [
+      { "label": "Total Awards", "value": "5+", "icon": "FaTrophy" },
+      { "label": "First Prizes", "value": "3", "icon": "FaMedal" },
+      { "label": "Semi-Final Positions", "value": "2", "icon": "FaAward" }
+    ]
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "description": "Ready to innovate together? Let's discuss your next AI/ML project or research collaboration",
+    "form": {
+      "successMessage": "Message sent successfully! I'll get back to you soon.",
+      "submitLabel": "Send Message",
+      "namePlaceholder": "Your Name",
+      "emailPlaceholder": "Your Email",
+      "messagePlaceholder": "Your Message"
+    },
+    "methods": [
+      {
+        "type": "email",
+        "label": "Email",
+        "value": "akhilarul324@gmail.com",
+        "href": "mailto:akhilarul324@gmail.com",
+        "icon": "FaEnvelope",
+        "gradient": "from-red-400 to-red-600"
+      },
+      {
+        "type": "phone",
+        "label": "Phone",
+        "value": "[REDACTED]",
+        "href": "tel:[REDACTED]",
+        "icon": "FaPhone",
+        "gradient": "from-green-400 to-green-600"
+      },
+      {
+        "type": "linkedin",
+        "label": "LinkedIn",
+        "value": "a-akhil-16b396201",
+        "href": "https://linkedin.com/in/a-akhil-16b396201/",
+        "icon": "FaLinkedin",
+        "gradient": "from-blue-400 to-blue-600"
+      },
+      {
+        "type": "github",
+        "label": "GitHub",
+        "value": "A-Akhil",
+        "href": "https://github.com/A-Akhil",
+        "icon": "FaGithub",
+        "gradient": "from-gray-500 to-gray-700"
+      }
+    ],
+    "location": {
+      "headline": "Location",
+      "body": [
+        "Kollemcode, Kanyakumari, Tamil Nadu, India",
+        "Currently studying at SRM Institute of Science and Technology, Chennai"
+      ]
+    },
+    "footer": "© 2025 A Akhil. Designed with ❤️ by A Akhil. All rights reserved."
+  },
+  "education": [
+    {
+      "institution": "SRM Institute of Science and Technology",
+      "degree": "B.Tech",
+      "field": "Computer Science with AI-ML Specialization",
+      "period": "2022 - Present",
+      "location": "Chennai, Tamil Nadu",
+      "achievements": [
+        "CGPA: 9.5/10",
+        "Member of AI Research Club",
+        "Published 2 research papers in international journals"
+      ]
+    }
+  ],
+  "seo": {
+    "title": "A Akhil - AI/ML Developer & Researcher",
+    "description": "Personal portfolio of A Akhil, an AI/ML Developer and Researcher with experience at DRDO, ISRO, and Samsung R&D.",
+    "keywords": [
+      "AI",
+      "Machine Learning",
+      "Developer",
+      "Researcher",
+      "Portfolio",
+      "DRDO",
+      "ISRO",
+      "Samsung"
+    ],
+    "baseUrl": "https://devakhil.com",
+    "socialImage": "/og-image.png",
+    "twitterHandle": "@AkhilAI"
+  },
+  "terminal": {
+    "greeting": {
+      "intro": [
+        "Welcome to Akhil's interactive terminal.",
+        "Type 'help' to explore commands or ask about projects, experience, and skills."
+      ],
+      "prompts": [
+        "Try 'projects' to list highlighted work.",
+        "Ask 'contact' for ways to connect."
+      ]
+    },
+    "quickLinks": [
+      {
+        "id": "github",
+        "label": "GitHub",
+        "url": "https://github.com/A-Akhil",
+        "icon": "FaGithub"
+      },
+      {
+        "id": "linkedin",
+        "label": "LinkedIn",
+        "url": "https://linkedin.com/in/a-akhil-16b396201/",
+        "icon": "FaLinkedin"
+      }
+    ]
+  },
+  "contentMeta": {
+    "version": "1.0.0",
+    "lastUpdated": "2025-10-21"
+  }
+}

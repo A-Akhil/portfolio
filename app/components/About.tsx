@@ -2,20 +2,24 @@
 
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import portfolioData from '../data/portfolioData';
+import { getPortfolioData } from '@/app/utils/getPortfolioData';
 
 const About = () => {
-  const { personalInfo, experiences, projects } = portfolioData;
+  const { profile, about, experience, projects } = getPortfolioData();
+  const bioParagraphs = about.body.length ? about.body : profile.bio;
+  const highlightSkills = about.highlightSkills.length ? about.highlightSkills : [];
+  const stats = about.stats?.length
+    ? about.stats.map((stat) => ({ number: stat.value, label: stat.label }))
+    : [
+        { number: `${experience.items.length}+`, label: 'Research Roles' },
+        { number: `${projects.items.length}+`, label: 'AI/ML Projects' },
+      ];
+  const profileImage = about.image ?? profile.avatar;
   
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
   });
-
-  const stats = [
-    { number: `${experiences.length}+`, label: 'Research Internships' },
-    { number: `${projects.length}+`, label: 'AI/ML Projects' },
-  ];
 
   return (
     <section id="about" className="py-20 px-4 relative">
@@ -28,7 +32,7 @@ const About = () => {
           className="text-center mb-16"
         >
           <h2 className="text-4xl md:text-5xl font-bold mb-6 gradient-text">
-            About Me
+            {about.title}
           </h2>
           <div className="w-24 h-1 bg-gradient-to-r from-ai-cyan to-ai-blue mx-auto mb-8"></div>
         </motion.div>
@@ -41,19 +45,14 @@ const About = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             className="space-y-6"
           >
-            {personalInfo.bio.map((paragraph, index) => (
+            {bioParagraphs.map((paragraph, index) => (
               <p key={index} className="text-lg text-ai-light/80 leading-relaxed">
                 {paragraph}
               </p>
             ))}
-            <p className="text-lg text-ai-light/80 leading-relaxed">
-              My expertise spans machine learning, deep learning, computer vision, natural language processing, 
-              and full-stack development. I believe in the power of AI to solve real-world problems and 
-              create meaningful impact.
-            </p>
 
             <div className="flex flex-wrap gap-3 mt-8">
-              {['Python', 'Machine Learning', 'Deep Learning', 'Computer Vision', 'NLP', 'React', 'Node.js'].map((skill, index) => (
+              {highlightSkills.map((skill, index) => (
                 <motion.span
                   key={skill}
                   initial={{ opacity: 0, scale: 0 }}
@@ -85,8 +84,8 @@ const About = () => {
               
               {/* Image - Full rectangular image */}
               <img 
-                src={personalInfo.avatarUrl} 
-                alt="A Akhil" 
+                src={profileImage.src} 
+                alt={profileImage.alt} 
                 className="max-w-full w-80 object-cover border-2 border-ai-dark relative z-10"
               />
             </motion.div>
@@ -99,15 +98,12 @@ const About = () => {
               className="bg-ai-gray/30 px-8 py-4 rounded-lg border border-ai-blue/30 shadow-lg mt-4"
             >
               <div className="flex gap-8 text-center">
-                <div>
-                  <span className="text-ai-cyan text-2xl font-bold">{experiences.length}+</span>
-                  <span className="text-ai-light/70 text-sm block">Research Roles</span>
-                </div>
-                <div className="h-12 w-px bg-ai-blue/30"></div>
-                <div>
-                  <span className="text-ai-cyan text-2xl font-bold">{projects.length}+</span>
-                  <span className="text-ai-light/70 text-sm block">AI/ML Projects</span>
-                </div>
+                {stats.map((stat, index) => (
+                  <div key={`${stat.label}-${index}`} className="flex flex-col items-center">
+                    <span className="text-ai-cyan text-2xl font-bold">{stat.number}</span>
+                    <span className="text-ai-light/70 text-sm block">{stat.label}</span>
+                  </div>
+                ))}
               </div>
             </motion.div>
           </motion.div>
