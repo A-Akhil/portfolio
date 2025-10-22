@@ -180,7 +180,7 @@ const Contact = () => {
             <div>
               <h3 className="text-2xl font-bold text-ai-light mb-6">Contact Information</h3>
               <p className="text-ai-light/70 leading-relaxed mb-8">
-                I'm always excited to discuss new opportunities, research collaborations, 
+                I&apos;m always excited to discuss new opportunities, research collaborations, 
                 or innovative AI/ML projects. Feel free to reach out through any of the channels below.
               </p>
             </div>

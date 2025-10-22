@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { getPortfolioData } from '@/app/utils/getPortfolioData';
@@ -83,10 +84,13 @@ const About = () => {
               <div className="absolute -inset-1 bg-gradient-to-r from-ai-cyan via-ai-blue to-ai-purple opacity-70 blur-sm animate-pulse"></div>
               
               {/* Image - Full rectangular image */}
-              <img 
-                src={profileImage.src} 
-                alt={profileImage.alt} 
+              <Image
+                src={profileImage.src}
+                alt={profileImage.alt}
+                width={profileImage.width ?? 320}
+                height={profileImage.height ?? 320}
                 className="max-w-full w-80 object-cover border-2 border-ai-dark relative z-10"
+                priority
               />
             </motion.div>
             
