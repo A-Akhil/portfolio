@@ -74,6 +74,7 @@ const ASCIIArtComponent: React.FC<ASCIIArtProps> = ({ isVisible, onClose }) => {
       img.src = e.target?.result as string;
     };
     reader.readAsDataURL(file);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [options]);
   
   const convertImageToASCII = useCallback((img: HTMLImageElement) => {
@@ -160,6 +161,7 @@ const ASCIIArtComponent: React.FC<ASCIIArtProps> = ({ isVisible, onClose }) => {
     if (e.dataTransfer.files && e.dataTransfer.files.length > 0) {
       handleFileSelect(e.dataTransfer.files[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleFileSelect]);
   
   const handleDragOver = useCallback((e: React.DragEvent<HTMLDivElement>) => {
@@ -175,6 +177,7 @@ const ASCIIArtComponent: React.FC<ASCIIArtProps> = ({ isVisible, onClose }) => {
     if (e.target.files && e.target.files.length > 0) {
       handleFileSelect(e.target.files[0]);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [handleFileSelect]);
   
   const triggerFileInput = () => {

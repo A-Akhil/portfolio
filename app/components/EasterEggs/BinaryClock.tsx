@@ -41,6 +41,7 @@ const BinaryClock: React.FC<BinaryClockProps> = ({ isVisible, onClose }) => {
     updateBinaryTime();
     const interval = setInterval(updateBinaryTime, 1000);
     return () => clearInterval(interval);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const renderBinaryDigits = (binary: string, label: string, color: string) => {
@@ -149,7 +150,7 @@ const BinaryClock: React.FC<BinaryClockProps> = ({ isVisible, onClose }) => {
 
           {/* Easter Egg Info */}
           <div className="text-center text-xs text-gray-500 mt-2">
-            <p>⏰ Binary Clock Easter Egg • Time in programmer's language!</p>
+            <p>⏰ Binary Clock Easter Egg • Time in programmer&apos;s language!</p>
           </div>
         </motion.div>
       )}
