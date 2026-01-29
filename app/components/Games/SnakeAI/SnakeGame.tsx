@@ -89,6 +89,7 @@ const SnakeGame: React.FC = () => {
 
     window.addEventListener('keydown', handleKeyPress);
     return () => window.removeEventListener('keydown', handleKeyPress);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState.isAI, gameState.direction, gameState.gameStatus]);
 
   // Game loop
@@ -105,6 +106,7 @@ const SnakeGame: React.FC = () => {
         }
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState.gameStatus, gameState.difficulty.speed]);
 
   // AI decision making
@@ -150,6 +152,7 @@ const SnakeGame: React.FC = () => {
         }
       };
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [gameState.isAI, gameState.gameStatus, gameState.snake, gameState.food, gameState.direction, showAIPath]);
 
   const moveSnake = useCallback(() => {

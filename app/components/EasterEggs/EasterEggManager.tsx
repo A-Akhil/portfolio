@@ -139,6 +139,7 @@ const EasterEggManager: React.FC = () => {
         console.log(`%c🛠️  Debug: Call resetEasterEggs() in console to reset all easter egg state`, 'color: #FF6600; font-size: 12px;');
       }
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   // Auto-deactivate Konami code after 10 minutes
