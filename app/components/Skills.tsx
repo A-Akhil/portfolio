@@ -44,7 +44,7 @@ const Skills = () => {
               className="bg-ai-gray/30 backdrop-blur-sm border border-ai-blue/20 rounded-2xl p-6 hover:border-ai-cyan/50 transition-all duration-300"
             >
               <h3 className="text-2xl font-bold text-ai-cyan mb-6 text-center">
-                {category.label ?? category.title}
+                {category.label}
               </h3>
               
               <div className="space-y-6">
