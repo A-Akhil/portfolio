@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaGithub, FaCodeBranch, FaExternalLinkAlt } from 'react-icons/fa';
-import portfolioData from '../data/portfolioData';
+import { getPortfolioData } from '../utils/getPortfolioData';
 
 const OpenSource: React.FC = () => {
   const [ref, inView] = useInView({
@@ -12,7 +12,11 @@ const OpenSource: React.FC = () => {
     threshold: 0.1,
   });
 
-  const { openSourceContributions } = portfolioData;
+  const { openSourceContributions = [] } = getPortfolioData();
+
+  if (!openSourceContributions || openSourceContributions.length === 0) {
+    return null;
+  }
 
   return (
     <section id="opensource" className="py-20 relative">

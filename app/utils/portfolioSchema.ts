@@ -173,6 +173,23 @@ const AwardsContentSchema = z.object({
   stats: z.array(StatBadgeSchema).optional(),
 });
 
+const PublicationSchema = z.object({
+  title: z.string(),
+  venue: z.string(),
+  date: z.string(),
+  description: z.array(z.string()),
+  doi: z.string().optional(),
+  doiUrl: z.string().optional(),
+});
+
+const OpenSourceContributionSchema = z.object({
+  project: z.string(),
+  role: z.string(),
+  year: z.string(),
+  description: z.string(),
+  prUrl: z.string().optional(),
+});
+
 const ContactMethodSchema = z.object({
   type: z.string(),
   label: z.string(),
@@ -239,6 +256,8 @@ export const PortfolioDataSchema = z.object({
   projects: ProjectsContentSchema,
   skills: SkillsContentSchema,
   awards: AwardsContentSchema,
+  publications: z.array(PublicationSchema).optional(),
+  openSourceContributions: z.array(OpenSourceContributionSchema).optional(),
   contact: ContactContentSchema,
   education: z.array(EducationEntrySchema),
   seo: SeoMetadataSchema,

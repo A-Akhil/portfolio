@@ -4,7 +4,7 @@ import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaFileAlt, FaExternalLinkAlt } from 'react-icons/fa';
-import portfolioData from '../data/portfolioData';
+import { getPortfolioData } from '../utils/getPortfolioData';
 
 const Publications: React.FC = () => {
   const [ref, inView] = useInView({
@@ -12,7 +12,11 @@ const Publications: React.FC = () => {
     threshold: 0.1,
   });
 
-  const { publications } = portfolioData;
+  const { publications = [] } = getPortfolioData();
+
+  if (!publications || publications.length === 0) {
+    return null;
+  }
 
   return (
     <section id="publications" className="py-20 relative">

@@ -175,6 +175,23 @@ export interface AwardsContent {
   stats?: StatBadge[];
 }
 
+export interface Publication {
+  title: string;
+  venue: string;
+  date: string;
+  description: string[];
+  doi?: string;
+  doiUrl?: string;
+}
+
+export interface OpenSourceContribution {
+  project: string;
+  role: string;
+  year: string;
+  description: string;
+  prUrl?: string;
+}
+
 export interface ContactMethod {
   type: string;
   label: string;
@@ -241,6 +258,8 @@ export interface PortfolioData {
   projects: ProjectsContent;
   skills: SkillsContent;
   awards: AwardsContent;
+  publications?: Publication[];
+  openSourceContributions?: OpenSourceContribution[];
   contact: ContactContent;
   education: EducationEntry[];
   seo: SeoMetadata;
