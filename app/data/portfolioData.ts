@@ -45,6 +45,23 @@ export interface Award {
   icon: string;
 }
 
+export interface Publication {
+  title: string;
+  venue: string;
+  date: string;
+  description: string[];
+  doi?: string;
+  doiUrl?: string;
+}
+
+export interface OpenSourceContribution {
+  project: string;
+  role: string;
+  year: string;
+  description: string;
+  prUrl?: string;
+}
+
 export interface Education {
   institution: string;
   degree: string;
@@ -79,6 +96,8 @@ export interface PortfolioData {
   projects: Project[];
   skills: Skill[];
   awards: Award[];
+  publications: Publication[];
+  openSourceContributions: OpenSourceContribution[];
   education: Education[];
   socialLinks: SocialLink[];
   seo: {
@@ -281,6 +300,43 @@ const portfolioData: PortfolioData = {
       description: 'First place in a national-level hackathon focused on AI solutions for healthcare challenges.',
       icon: 'trophy',
     },
+  ],
+
+  publications: [
+    {
+      title: 'Zonal HNSW: Scalable Approximate Nearest Neighbor Search for Billion-Scale Datasets',
+      venue: '3rd International Conference on Self Sustainable Artificial Intelligence Systems (ICSSAS)',
+      date: 'June 2025',
+      description: [
+        'Proposed Zonal HNSW, a scalable framework for billion-scale Approximate Nearest Neighbor (ANN) search.',
+        'Achieved up to 3× faster search speed, 98.7% recall@10, and a 29% reduction in index size compared to FAISS, Annoy, and HNSW.',
+        'Benchmarked on SIFT1B, DEEP1B, GLOVE-1.2M, and MUSIC100M using NVIDIA DGX A100.'
+      ],
+      doi: '10.1109/ICSSAS66150.2025.11081070',
+      doiUrl: 'https://doi.org/10.1109/ICSSAS66150.2025.11081070'
+    },
+    {
+      title: 'Traffic Signboard Detection Dataset for Object Detection Models',
+      venue: 'Zenodo Dataset Publication',
+      date: 'October 2025',
+      description: [
+        'Curated dataset of traffic signboard images for object detection and computer vision research.',
+        'Suitable for training and benchmarking models such as YOLO, SSD, and Faster R-CNN.',
+        'Released under CC BY 4.0.'
+      ],
+      doi: '10.5281/zenodo.17390356',
+      doiUrl: 'https://doi.org/10.5281/zenodo.17390356'
+    }
+  ],
+
+  openSourceContributions: [
+    {
+      project: 'Ollama',
+      role: 'Contributor',
+      year: '2025',
+      description: 'Contributed to the official Ollama CLI by implementing the initial ollama embed command, enabling command-line text embeddings with JSON output. Collaborated with core maintainers, addressed test failures, improved documentation, and co-authored the final merged feature.',
+      prUrl: 'https://github.com/ollama/ollama/pull/12795'
+    }
   ],
   
   education: [

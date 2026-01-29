@@ -11,6 +11,8 @@ import Experience from './components/Experience';
 import Projects from './components/Projects';
 import Skills from './components/Skills';
 import GitHubIntegration from './components/GitHub/GitHubIntegration';
+import Publications from './components/Publications';
+import OpenSource from './components/OpenSource';
 import Awards from './components/Awards';
 import Contact from './components/Contact';
 import Navigation from './components/Navigation';
@@ -80,8 +82,12 @@ export default function Home() {
               <Hero />
               <About />
               <Experience />
+              <Publications />
+              <OpenSource />
               <Projects />
+              <Awards />
               <Skills />
+
               
               {/* GitHub Integration Section */}
               <section id="github" className="py-20 bg-gradient-to-br from-ai-dark/50 to-ai-gray/30">
@@ -104,8 +110,7 @@ export default function Home() {
                   <GitHubIntegration />
                 </div>
               </section>
-              
-              <Awards />
+
               <Contact />
             </motion.div>
             
