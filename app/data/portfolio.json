@@ -46,11 +46,11 @@
       { "label": "Home", "target": "#hero" },
       { "label": "About", "target": "#about" },
       { "label": "Experience", "target": "#experience" },
-      { "label": "Projects", "target": "#projects" },
-      { "label": "Skills", "target": "#skills" },
       { "label": "Publications", "target": "#publications" },
       { "label": "Open Source", "target": "#opensource" },
+      { "label": "Projects", "target": "#projects" },
       { "label": "Awards", "target": "#awards" },
+      { "label": "Skills", "target": "#skills" },
       { "label": "Contact", "target": "#contact" }
     ],
     "terminal": {
