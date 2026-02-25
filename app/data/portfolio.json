@@ -10,7 +10,7 @@
     "summary": "I am a machine learning engineer who builds things that matter.",
     "location": "Kollemcode, Kanyakumari, Tamil Nadu, India",
     "email": "akhilarul324@gmail.com",
-    "phone": "[REDACTED]",
+    "phone": "",
     "github": "https://github.com/A-Akhil",
     "linkedin": "https://linkedin.com/in/a-akhil-16b396201/",
     "avatar": {
@@ -92,12 +92,6 @@
         "label": "Email",
         "url": "mailto:akhilarul324@gmail.com",
         "icon": "FaEnvelope"
-      },
-      {
-        "id": "phone",
-        "label": "Phone",
-        "url": "tel:[REDACTED]",
-        "icon": "FaPhone"
       }
     ],
     "floatingIcons": [
@@ -538,14 +532,6 @@
         "href": "mailto:akhilarul324@gmail.com",
         "icon": "FaEnvelope",
         "gradient": "from-red-400 to-red-600"
-      },
-      {
-        "type": "phone",
-        "label": "Phone",
-        "value": "[REDACTED]",
-        "href": "tel:[REDACTED]",
-        "icon": "FaPhone",
-        "gradient": "from-green-400 to-green-600"
       },
       {
         "type": "linkedin",

@@ -122,7 +122,6 @@ const ConsoleMessages: React.FC<ConsoleMessagesProps> = ({
         contact: () => {
           console.log(`%c📧 CONTACT INFORMATION:`, 'color: #FF3366; font-size: 16px; font-weight: bold;');
           console.log(`%cEmail: akhilarul324@gmail.com`, 'color: #00FF88;');
-          console.log(`%cPhone: [REDACTED]`, 'color: #00FF88;');
           console.log(`%cLinkedIn: linkedin.com/in/a-akhil-16b396201`, 'color: #00FF88;');
           console.log(`%cGitHub: github.com/A-Akhil`, 'color: #00FF88;');
           console.log(`%cLocation: Kollemcode, Kanyakumari, Tamil Nadu`, 'color: #00FF88;');
