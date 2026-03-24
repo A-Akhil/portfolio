@@ -574,31 +574,44 @@
     }
   ],
   "publications": [
-    {
-      "title": "Zonal HNSW: Scalable Approximate Nearest Neighbor Search for Billion-Scale Datasets",
-      "venue": "3rd International Conference on Self Sustainable Artificial Intelligence Systems (ICSSAS)",
-      "date": "June 2025",
-      "description": [
-        "Proposed Zonal HNSW, a scalable framework for billion-scale Approximate Nearest Neighbor (ANN) search.",
-        "Achieved up to 3× faster search speed, 98.7% recall@10, and a 29% reduction in index size compared to FAISS, Annoy, and HNSW.",
-        "Benchmarked on SIFT1B, DEEP1B, GLOVE-1.2M, and MUSIC100M using NVIDIA DGX A100."
-      ],
-      "doi": "10.1109/ICSSAS66150.2025.11081070",
-      "doiUrl": "https://doi.org/10.1109/ICSSAS66150.2025.11081070"
-    },
-    {
-      "title": "Traffic Signboard Detection Dataset for Object Detection Models",
-      "venue": "Zenodo Dataset Publication",
-      "date": "October 2025",
-      "description": [
-        "Curated dataset of traffic signboard images for object detection and computer vision research.",
-        "Suitable for training and benchmarking models such as YOLO, SSD, and Faster R-CNN.",
-        "Released under CC BY 4.0."
-      ],
-      "doi": "10.5281/zenodo.17390356",
-      "doiUrl": "https://doi.org/10.5281/zenodo.17390356"
-    }
-  ],
+  {
+    "title": "RAG-X: Density-Adaptive Path Sampling for Enhanced Knowledge Graph-Based Retrieval Augmented Generation",
+    "venue": "2025 International Conference on Signal Processing, Computation, Electronics, Power and Telecommunication (IConSCEPT), Karaikal, India",
+    "date": "2025",
+    "description": [
+      "Proposed RAG-X, a novel framework for improving Retrieval-Augmented Generation (RAG) in multi-hop reasoning scenarios over knowledge graphs.",
+      "Introduced density-adaptive path sampling to prevent hub over-exploration while ensuring comprehensive reasoning coverage.",
+      "Designed a dual-phase optimization approach combining lightweight candidate generation with cross-encoder reranking.",
+      "Achieved 92.4% factual accuracy (vs 65.8%), 89.2% answer completeness (vs 71.3%), and 87.6% reasoning coherence (vs 69.7%)."
+    ],
+    "doi": "10.1109/IConSCEPT66142.2025.11437293",
+    "doiUrl": "https://doi.org/10.1109/IConSCEPT66142.2025.11437293"
+  },
+  {
+    "title": "Zonal HNSW: Scalable Approximate Nearest Neighbor Search for Billion-Scale Datasets",
+    "venue": "3rd International Conference on Self Sustainable Artificial Intelligence Systems (ICSSAS)",
+    "date": "June 2025",
+    "description": [
+      "Proposed Zonal HNSW, a scalable framework for billion-scale Approximate Nearest Neighbor (ANN) search.",
+      "Achieved up to 3× faster search speed, 98.7% recall@10, and a 29% reduction in index size compared to FAISS, Annoy, and HNSW.",
+      "Benchmarked on SIFT1B, DEEP1B, GLOVE-1.2M, and MUSIC100M using NVIDIA DGX A100."
+    ],
+    "doi": "10.1109/ICSSAS66150.2025.11081070",
+    "doiUrl": "https://doi.org/10.1109/ICSSAS66150.2025.11081070"
+  },
+  {
+    "title": "Traffic Signboard Detection Dataset for Object Detection Models",
+    "venue": "Zenodo Dataset Publication",
+    "date": "October 2025",
+    "description": [
+      "Curated dataset of traffic signboard images for object detection and computer vision research.",
+      "Suitable for training and benchmarking models such as YOLO, SSD, and Faster R-CNN.",
+      "Released under CC BY 4.0."
+    ],
+    "doi": "10.5281/zenodo.17390356",
+    "doiUrl": "https://doi.org/10.5281/zenodo.17390356"
+  }
+],
   "openSourceContributions": [
     {
       "project": "Ollama",
