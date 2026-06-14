@@ -22,7 +22,7 @@
       "downloadName": "A_Akhil_Resume.pdf"
     },
     "bio": [
-      "I'm a passionate AI/ML developer and researcher currently pursuing B.Tech in Computer Science with specialization in AI-ML at SRM Institute of Science and Technology. My journey in artificial intelligence has been marked by groundbreaking research experiences at India's premier organizations.",
+      "I'm a passionate AI/ML developer and researcher and a B.Tech graduate in Computer Science with specialization in AI-ML from SRM Institute of Science and Technology. My journey in artificial intelligence has been marked by groundbreaking research experiences at India's premier organizations.",
       "From developing AI models for defense applications at DRDO to creating recommendation engines for space technology at ISRO, my work spans across cutting-edge domains of artificial intelligence and machine learning.",
       "My expertise spans machine learning, deep learning, computer vision, natural language processing, and full-stack development. I believe in the power of AI to solve real-world problems and create meaningful impact."
     ],
@@ -31,13 +31,21 @@
         "institution": "SRM Institute of Science and Technology",
         "degree": "B.Tech",
         "field": "Computer Science with AI-ML Specialization",
-        "period": "2022 - Prsent",
+        "period": "2022 - 2026",
         "location": "Chennai, Tamil Nadu",
         "achievements": [
-          "CGPA: 9.5/10",
+          "CGPA: 9.1/10",
           "Member of AI Research Club",
           "Published 2 research papers in international journals"
         ]
+      },
+      {
+        "institution": "Sacred Heart International School",
+        "degree": "ISC",
+        "field": "Maths-Biology",
+        "period": "2021 - 2022",
+        "location": "Kanyakumari, Tamil Nadu",
+        "achievements": []
       }
     ]
   },
@@ -120,7 +128,7 @@
   "about": {
     "title": "About Me",
     "body": [
-      "I'm a passionate AI/ML developer and researcher currently pursuing B.Tech in Computer Science with specialization in AI-ML at SRM Institute of Science and Technology. My journey in artificial intelligence has been marked by groundbreaking research experiences at India's premier organizations.",
+      "I'm a passionate AI/ML developer and researcher and a B.Tech graduate in Computer Science with specialization in AI-ML from SRM Institute of Science and Technology. My journey in artificial intelligence has been marked by groundbreaking research experiences at India's premier organizations.",
       "From developing AI models for defense applications at DRDO to creating recommendation engines for space technology at ISRO, my work spans across cutting-edge domains of artificial intelligence and machine learning.",
       "My expertise spans machine learning, deep learning, computer vision, natural language processing, and full-stack development. I believe in the power of AI to solve real-world problems and create meaningful impact."
     ],
@@ -156,9 +164,9 @@
     "items": [
       {
         "title": "Research Intern",
-        "company": "Defence Research & Development Organisation (CAIR-DRDO)",
+        "company": "Defence Research & Development Organisation (DRDO-CAIR)",
         "location": "India",
-        "period": "December 2025 – June 2026",
+        "period": "December 2024 – June 2025",
         "summary": "Developing an advanced web scraper leveraging LLM capabilities to efficiently extract and analyze data from websites.",
         "technologies": [
           "Python",
@@ -174,7 +182,7 @@
       },
       {
         "title": "Intern",
-        "company": "Indian Space Research Organisation (ISSDC-ISRO)",
+        "company": "Indian Space Research Organisation (ISRO-ISTRAC)",
         "location": "India",
         "period": "December 2024 – January 2025",
         "summary": "Developed a recommendation engine for the PRADAN website by ISSDC, enhancing user experience and data accessibility for ISRO.",
@@ -192,7 +200,7 @@
       },
       {
         "title": "Research Intern",
-        "company": "Defence Research & Development Organisation (CVRDE-DRDO)",
+        "company": "Defence Research & Development Organisation (DRDO-CVRDE)",
         "location": "India",
         "period": "July 2024 – August 2024",
         "summary": "Developed an AI model achieving 92% accuracy in predicting the remaining lifespan of BLDC motors and identifying faults in real-time during operation for Armoured Fighting Vehicles (AFVs). Reduced diagnostic time by 80%.",
@@ -226,6 +234,24 @@
           "Achieved 85% accuracy in sentiment analysis"
         ],
         "accentGradient": "from-purple-500 to-purple-600"
+      },
+      {
+        "title": "DGX A100 Root Administrator",
+        "company": "SRM Institute of Science and Technology",
+        "location": "India",
+        "period": "2023 – 2026",
+        "summary": "Administer and maintain NVIDIA DGX A100 clusters with Kubernetes orchestration, supporting over 100 AI/ML researchers.",
+        "technologies": [
+          "Linux",
+          "Kubernetes",
+          "Docker",
+          "NVIDIA DGX"
+        ],
+        "achievements": [
+          "Resolved Linux, driver, and kernel-level failures",
+          "Improved GPU utilization for higher experiment throughput"
+        ],
+        "accentGradient": "from-gray-500 to-gray-700"
       }
     ]
   },
@@ -239,6 +265,44 @@
       "newTab": true
     },
     "items": [
+      {
+        "title": "Mini: Minimalist Focus Launcher",
+        "description": "Minimalist Android launcher designed to reduce digital distractions by eliminating clutter, notifications, and visual noise from the home screen.",
+        "technologies": [
+          "Kotlin",
+          "Jetpack Compose",
+          "MVVM",
+          "Android"
+        ],
+        "githubUrl": "https://github.com/A-Akhil/mini-launcher",
+        "demoUrl": "https://play.google.com/store/apps/details?id=com.minifocus.launcher",
+        "gradient": "from-blue-400 to-indigo-600",
+        "icon": "📱",
+        "metric": {
+          "label": "Status",
+          "value": "Production"
+        },
+        "featured": true
+      },
+      {
+        "title": "CertiMaster",
+        "description": "Automated certificate generation platform that handles batch creation, multi-format export (TXT, CSV, XLSX), and QR-based verification—eliminating manual paperwork.",
+        "technologies": [
+          "TypeScript",
+          "React",
+          "Streamlit",
+          "Cloudflare D1"
+        ],
+        "githubUrl": "https://github.com/A-Akhil/CertiMaster",
+        "demoUrl": "https://certimaster.devakhil.com",
+        "gradient": "from-green-400 to-teal-600",
+        "icon": "🎓",
+        "metric": {
+          "label": "Status",
+          "value": "Live"
+        },
+        "featured": true
+      },
       {
         "title": "Machine Learning for Diabetic Prediction",
         "description": "Conducted a comparative study on Ridge, Lasso, and ElasticNet regression models, achieving a prediction accuracy of up to 88%. Implemented and optimized models in Java, processing datasets with over 10,000 patient records.",
@@ -564,16 +628,34 @@
       "institution": "SRM Institute of Science and Technology",
       "degree": "B.Tech",
       "field": "Computer Science with AI-ML Specialization",
-      "period": "2022 - Present",
+      "period": "2022 - 2026",
       "location": "Chennai, Tamil Nadu",
       "achievements": [
-        "CGPA: 9.5/10",
+        "CGPA: 9.1/10",
         "Member of AI Research Club",
         "Published 2 research papers in international journals"
       ]
+    },
+    {
+      "institution": "Sacred Heart International School",
+      "degree": "ISC",
+      "field": "Maths-Biology",
+      "period": "2021 - 2022",
+      "location": "Kanyakumari, Tamil Nadu",
+      "achievements": []
     }
   ],
   "publications": [
+  {
+    "title": "OptiRAG: A Feedback-Driven Approach to Improving Retrieval-Augmented Generation",
+    "venue": "Advanced Pathways in Electrical, Communication, and Automation Reconfigurable Systems, Smart Energy, and AI for Industry 5.0 (CRC Press)",
+    "date": "May 2026",
+    "description": [
+      "Book chapter on feedback-driven RAG optimization; published by CRC Press in peer-reviewed conference proceedings."
+    ],
+    "doi": "9781041302971",
+    "doiUrl": "#"
+  },
   {
     "title": "RAG-X: Density-Adaptive Path Sampling for Enhanced Knowledge Graph-Based Retrieval Augmented Generation",
     "venue": "2025 International Conference on Signal Processing, Computation, Electronics, Power and Telecommunication (IConSCEPT), Karaikal, India",
