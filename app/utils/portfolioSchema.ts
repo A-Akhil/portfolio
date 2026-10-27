@@ -188,6 +188,8 @@ const OpenSourceContributionSchema = z.object({
   year: z.string(),
   description: z.string(),
   prUrl: z.string().optional(),
+  icon: z.literal('linux').optional(),
+  links: z.array(z.object({ label: z.string(), url: z.string() })).optional(),
 });
 
 const ContactMethodSchema = z.object({
