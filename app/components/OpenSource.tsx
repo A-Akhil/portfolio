@@ -3,7 +3,7 @@
 import React from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
-import { FaGithub, FaCodeBranch, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaGithub, FaLinux, FaCodeBranch, FaExternalLinkAlt } from 'react-icons/fa';
 import { getPortfolioData } from '../utils/getPortfolioData';
 
 const OpenSource: React.FC = () => {
@@ -54,7 +54,11 @@ const OpenSource: React.FC = () => {
               <div className="flex items-start gap-6">
                 <div className="flex-shrink-0">
                   <div className="w-14 h-14 rounded-xl bg-gradient-to-br from-ai-green to-ai-cyan flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <FaGithub size={28} className="text-white" />
+                    {contribution.icon === 'linux' ? (
+                      <FaLinux size={28} className="text-white" />
+                    ) : (
+                      <FaGithub size={28} className="text-white" />
+                    )}
                   </div>
                 </div>
 
@@ -75,6 +79,24 @@ const OpenSource: React.FC = () => {
                   <p className="text-ai-light/70 leading-relaxed mb-4">
                     {contribution.description}
                   </p>
+
+                  {contribution.links && (
+                    <div className="flex flex-wrap gap-3">
+                      {contribution.links.map((link) => (
+                        <a
+                          key={link.url}
+                          href={link.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-ai-green/10 border border-ai-green/30 text-ai-green hover:bg-ai-green/20 hover:border-ai-green/50 transition-all duration-300 group/link"
+                        >
+                          <FaCodeBranch size={16} />
+                          <span className="font-semibold">{link.label}</span>
+                          <FaExternalLinkAlt size={14} className="group-hover/link:translate-x-1 transition-transform" />
+                        </a>
+                      ))}
+                    </div>
+                  )}
 
                   {contribution.prUrl && (
                     <a

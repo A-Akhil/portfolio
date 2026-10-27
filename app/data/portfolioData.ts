@@ -60,6 +60,8 @@ export interface OpenSourceContribution {
   year: string;
   description: string;
   prUrl?: string;
+  icon?: 'linux';
+  links?: { label: string; url: string }[];
 }
 
 export interface Education {

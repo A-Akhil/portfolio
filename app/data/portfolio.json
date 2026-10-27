@@ -696,6 +696,30 @@
 ],
   "openSourceContributions": [
     {
+      "project": "Linux Kernel (ALSA rawmidi)",
+      "icon": "linux",
+      "role": "Contributor",
+      "year": "2026",
+      "description": "Authored a fix for a syzkaller-reported hung task in the ALSA rawmidi driver (\"task hung in odev_open\"): output draining now gives up when the device stops draining. Worked through review with the sound subsystem maintainer, and the patch was merged into the sound tree and then mainline Linux with me as author.",
+      "links": [
+        { "label": "Mainline Commit", "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=eb8a4dd45471b19db4862af91455a187ebd8c426" },
+        { "label": "Mailing List Thread", "url": "https://lore.kernel.org/all/20260920130620.61431-1-akhilarul324@gmail.com/" },
+        { "label": "Syzkaller Bug", "url": "https://syzkaller.appspot.com/bug?extid=825b7e3a03dd072c187f" }
+      ]
+    },
+    {
+      "project": "Linux Kernel (Bluetooth)",
+      "icon": "linux",
+      "role": "Contributor",
+      "year": "2026",
+      "description": "Authored a fix for a syzkaller-reported warning in the Bluetooth core (\"WARNING in hci_recv_frame\"): hci_core no longer queues rx_work while the workqueue is being drained. The patch passed the Bluetooth CI, was applied to bluetooth-next and then landed in mainline Linux.",
+      "links": [
+        { "label": "Mainline Commit", "url": "https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=75c1cb8178fe84403fd95236ddf21754f0a4156c" },
+        { "label": "Mailing List Thread", "url": "https://lore.kernel.org/all/20261023161609.253097-1-akhilarul324@gmail.com/" },
+        { "label": "Syzkaller Bug", "url": "https://syzkaller.appspot.com/bug?extid=2344fb8002f3ef5b1712" }
+      ]
+    },
+    {
       "project": "Ollama",
       "role": "Contributor",
       "year": "2025",
